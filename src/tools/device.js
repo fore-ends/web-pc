@@ -1,12 +1,12 @@
 /**
- * Created by hth on 2016/12/4.
+ * Created by chunting on 2017/12/4.
  */
 const ua = window.navigator.userAgent;
 let android = ua.match(/(Android);?[\s\/]+([\d.]+)?/);
 let ipad = ua.match(/(iPad).*OS\s([\d_]+)/);
 let ipod = ua.match(/(iPod)(.*OS\s([\d_]+))?/);
 let iphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/);
-let device ={};
+let device = {};
 device.ios = device.android = device.iphone = device.ipad = device.androidChrome = false
 // Android
 if (android) {
@@ -42,5 +42,5 @@ if (device.ios && device.osVersion && ua.indexOf('Version/') >= 0) {
 device.webView = (iphone || ipad || ipod) && ua.match(/.*AppleWebKit(?!.*Safari)/i);
 /*wechat*/
 device.isWeixin = /MicroMessenger/i.test(ua);
-const  $device =device;
+const $device = device;
 export default $device;

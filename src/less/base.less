@@ -79,7 +79,9 @@ body {
     background: #fff;
     color: @color-text-secondary;
     font-size: 14px;
-    text-size-adjust: 100% !important
+    text-size-adjust: 100% !important;
+    min-width: 1002px;
+    margin:0 auto;
 }
 ul,ol,dl{
     list-style: none;
@@ -127,19 +129,4 @@ ul,ol,dl{
     display: none;
 }
 
-.app{
-    table{
-        text-align: center;
-        white-space: nowrap;
-        th,td{
-            text-align: center;
-            font-weight: normal;
-            padding:.5rem;
-        }
-        th{
-            background-color: @color-active;
-            color:#fff;
-        }
-    }
-}
 

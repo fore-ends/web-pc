@@ -19,7 +19,7 @@ console.log(env);
 const config = {
     entry: {
         'ventor': ['vue', 'vue-router', 'vuex'],
-        'tools': ['babel-polyfill', 'whatwg-fetch'],
+        'tools': ['babel-polyfill'],
         'main': './src/main.js'
     },
     output: {
@@ -36,61 +36,62 @@ const config = {
         }
     },
     module: {
-        rules: [
-            {
-                test: /\.(js|vue)$/,
-                loader: 'eslint-loader',
-                enforce: 'pre',
-                exclude: [/node_modules/],
-                options: {
-                    formatter: require('eslint-friendly-formatter')
-                }
-            },
-            {
-                test: /\.vue$/,
-                loader: 'vue-loader'
-            },
-            {
-                test: /\.js$/,
-                loader: 'babel-loader'
-            },
-            {
-                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 4048,
-                    name: '[name].[hash:8].[ext]'
-                }
-            },
-            {
-                test: /\.less$/,
-                use: extractLESS.extract({
-                    fallback: 'style-loader',
-                    //resolve-url-loader may be chained before sass-loader if necessary
-                    use: ['css-loader', 'postcss-loader', 'less-loader']
-                })
-
-
-            },
-            {
-                test: /\.css$/,
-                use: extractCSS.extract({
-                    fallback: 'style-loader',
-                    //resolve-url-loader may be chained before sass-loader if necessary
-                    use: ['css-loader']
-                })
-
-
-            },
-            {
-                test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 10000,
-                    name: '[name].[hash:8].[ext]'
-                }
+        rules: [{
+            test: /\.(js|vue)$/,
+            loader: 'eslint-loader',
+            enforce: 'pre',
+            exclude: [/node_modules/],
+            options: {
+                formatter: require('eslint-friendly-formatter')
             }
-        ]
+        }, {
+            test: /\.vue$/,
+            loader: 'vue-loader'
+        }, {
+            test: /\.js$/,
+            loader: 'babel-loader'
+        }, {
+            test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+            loader: 'url-loader',
+            options: {
+                limit: 4048,
+                name: '[name].[hash:8].[ext]'
+            }
+        }, {
+            test: /\.less$/,
+            use: extractLESS.extract({
+                fallback: 'style-loader',
+                //resolve-url-loader may be chained before sass-loader if necessary
+                use: ['css-loader', 'postcss-loader', 'less-loader']
+            })
+
+
+        }, {
+            test: /\.scss$/,
+            use: extractLESS.extract({
+                fallback: 'style-loader',
+                //resolve-url-loader may be chained before sass-loader if necessary
+                use: ['css-loader', 'postcss-loader', 'sass-loader']
+            })
+
+
+        }, {
+            test: /\.css$/,
+            use: extractCSS.extract({
+                fallback: 'style-loader',
+                //resolve-url-loader may be chained before sass-loader if necessary
+                use: ['css-loader']
+            })
+
+
+        }, {
+            test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+            loader: 'url-loader',
+            options: {
+                limit: 10000,
+                name: '[name].[hash:8].[ext]'
+            }
+        }]
     },
     plugins: [
         new CleanWebpackPlugin(['./dist', './html']),
@@ -110,9 +111,9 @@ const config = {
             hash: true,
             filename: path.resolve(__dirname, 'html/index.html'),
             template: './index.ejs',
-            minify: {//压缩HTML文件
-                removeComments: true,    //移除HTML中的注释
-                collapseWhitespace: true    //删除空白符与换行符
+            minify: { //压缩HTML文件
+                removeComments: true, //移除HTML中的注释
+                collapseWhitespace: true //删除空白符与换行符
             }
         }),
         new FriendlyErrorsPlugin()

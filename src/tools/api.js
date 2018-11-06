@@ -4,6 +4,14 @@
 import 'babel-polyfill';
 import axios from 'axios';
 import * as config from './config';
+import {
+    Message
+} from 'element-ui';
+// Message({
+//     showClose: true,
+//     message: '测试代码',
+//     type: 'error'
+// });
 let serverUrl = config.devUrl;
 let sysUrl = config.sysDev;
 if (process.env.kingold == 'test') {
@@ -47,27 +55,18 @@ let get = (path, data = {}) => {
         withCredentials: true
     }).then(response => {
         if (response.status == 200) {
-            if(response.data.code == 401){
-                //Toast('登录超时，请重新登录！');
-                setTimeout(()=>{
-                    postSys('/a/logout').then(res => {
-                        logout();
-                        if (res.code == 200) {
-                            return false;
-                        }
-                        // Toast(res.msg);
-                    })
-                },3000);
-            }
+
             return response.data;
         }
-        if (response.status == 302) {
-            logout();
-        }
+
         return {};
     }).then(data => {
-        if (data.code == 1220) {
-            logout();
+        if (data.code != 200) {
+            Message({
+                showClose: true,
+                message: '测试代码',
+                type: 'error'
+            });
         }
         return data;
     }).catch(err => {
@@ -81,7 +80,7 @@ let getSys = (path, data = {}) => {
     let url = `${sysUrl + path}`
     return get(url, data);
 };
-import  {logout} from './operation';
+
 let post = (path, data = {}) => {
     let url = '';
     if (/http/.test(path)) {
@@ -106,19 +105,14 @@ let post = (path, data = {}) => {
         data: $query(data)
     }).then(response => {
         if (response.status == 200) {
-            if(response.data.code == 401){
-                //Toast('登录超时，请重新登录！');
-                setTimeout(()=>{
-                    logout();
-                },3000);
-            }
+
             return response.data;
         } else {
             return {};
         }
     }).then(data => {
         if (data.code == 1220) {
-            logout();
+            // logout();
         }
         return data;
     }).catch(err => {
