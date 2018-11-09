@@ -48,7 +48,7 @@
             },
             image:{
                 type:String,
-                default:'http://tse3.mm.bing.net/th?id=OIP.xqiF1g7jbRKpCU7NQrZB-AHaLe&w=130&h=202&c=7&o=5&dpr=2&pid=1.7'
+                default:'https://image-static.segmentfault.com/353/178/353178302-5bdfe2c52e3df_articlex'
             },
             update:{
                 type:Boolean,
