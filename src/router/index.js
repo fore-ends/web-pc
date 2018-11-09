@@ -13,6 +13,8 @@ const Menus = resolve => require(['../containers/Menus'], resolve);
 const User = resolve => require(['../containers/User'], resolve);
 const Detail = resolve => require(['../containers/Detail'], resolve);
 const Login = resolve => require(['../containers/Login'], resolve);
+const Safe = resolve => require(['../containers/Safe'], resolve);
+const Certify = resolve => require(['../containers/Certify'], resolve);
 // import Home from '../containers/Home';
 // import Menus from '../containers/Menus';
 const title = '平台';
@@ -59,6 +61,23 @@ let routes = [{
         path: 'user',
         name: 'user',
         component: User,
+        meta: {
+            title: '基本资料'
+        }
+    }, {
+        path: 'certify',
+        name: 'certify',
+        component: Certify,
+        meta: {
+            title: '实名认证'
+        }
+    }, {
+        path: 'safe',
+        name: 'safe',
+        component: Safe,
+        meta: {
+            title: '安全设置'
+        }
     }]
 }];
 routes.map(route => {

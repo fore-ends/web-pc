@@ -1,24 +1,14 @@
 <template>
-    <div class="user">
-        <!-- <index-title :title="'基本资料'"></index-title> -->
-        <polygon-wrap :sideLeng="86"></polygon-wrap>
+    <div class="safe">
+        
     </div>
 </template>
-<style lang="less">
-    .user{
-        // background-color: rgba(0,0,0,.6);
-        height: 520px;
-    }
-    
-</style>
 <script>
     import $api from '../tools/api';
     import { cookie } from '../tools/store';
     import { checkIdNumber, verifyTime, onlyNumber, onlyStr } from '../tools/operation';
-    import IndexTitle from '../components/IndexTitle';
-    import PolygonWrap from '../components/Polygon';
     export default {
-        name: 'user',
+        name: 'safe',
         data(){
             return {
                 name:'www',
@@ -43,7 +33,7 @@
         computed: {
 
         },
-        components: {  IndexTitle, PolygonWrap },
+        components: {  },
         methods: {
             getList(){
                 $api.get('/search').then(res =>{

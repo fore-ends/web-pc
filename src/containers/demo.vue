@@ -1,22 +1,40 @@
 <template>
     <div class="user">
-        <!-- <index-title :title="'基本资料'"></index-title> -->
-        <polygon-wrap :sideLeng="86"></polygon-wrap>
+        <!-- <ul>
+            <li v-for="item in items">
+                <template v-if="item.id == 1">
+                    <input type="text" 
+                        v-model="item.name"
+                        @input="item.name = onlyNumber(item.name)"
+                        @afterpaste="item.name = onlyNumber(item.name)">
+                </template>
+                <template v-else>
+                    <input type="text" 
+                        v-model="item.name"
+                        @input="item.name = onlyStr(item.name)"
+                        @afterpaste="item.name = onlyStr(item.name)">
+                </template>
+                
+            </li>
+        </ul> -->
+
+        <!-- <index-footer :data="name" :items="items"></index-footer> -->
+        <!-- <ul>
+            <li flex="main:justify" v-for="item in items">
+                <span>{{item.name}}</span>
+                <span>{{item.href}}</span>
+                <span>{{item.time}}</span>
+            </li>
+        </ul>
+        <p>{{items.length}}</p> -->
+        用户信息
     </div>
 </template>
-<style lang="less">
-    .user{
-        // background-color: rgba(0,0,0,.6);
-        height: 520px;
-    }
-    
-</style>
 <script>
     import $api from '../tools/api';
     import { cookie } from '../tools/store';
     import { checkIdNumber, verifyTime, onlyNumber, onlyStr } from '../tools/operation';
-    import IndexTitle from '../components/IndexTitle';
-    import PolygonWrap from '../components/Polygon';
+    import IndexFooter from '../components/IndexFooter';
     export default {
         name: 'user',
         data(){
@@ -43,7 +61,7 @@
         computed: {
 
         },
-        components: {  IndexTitle, PolygonWrap },
+        components: { IndexFooter },
         methods: {
             getList(){
                 $api.get('/search').then(res =>{

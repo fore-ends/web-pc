@@ -133,7 +133,7 @@ if (env == 'production' || env == 'test') {
         new webpack.DefinePlugin({
             'process.env': {
                 'NODE_ENV': '"production"',
-                'kingold': JSON.stringify(env)
+                'bizeff': JSON.stringify(env)
             }
         }),
         new webpack.optimize.UglifyJsPlugin({

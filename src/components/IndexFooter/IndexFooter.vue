@@ -1,25 +1,15 @@
 <template>
-    <div class="footer">
-        <input type="text" v-model="inputs">
-        <p>{{inputs}}</p>
-        <div>
-            <dl v-for="item in lists">
-                <dt>{{item.name}}</dt>
-            </dl>
-        </div>
-        <div>
-            <button @click="click">click</button>
-        </div>
-    </div>
+    <div class="index-footer">footer</div>
 </template>
 <script>
-
+    import './index-footer.less';
     export default {
-        name: 'footer-wrap',
-        props:['data','items'],
+        name: 'index-footer',
+        // props:['data','items'],
         data(){
             return {
-                name:this.data
+                name:'2222',
+                items:[]
             }
         },
         created(){

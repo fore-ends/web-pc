@@ -14,11 +14,11 @@ import {
 // });
 let serverUrl = config.devUrl;
 let sysUrl = config.sysDev;
-if (process.env.kingold == 'test') {
+if (process.env.bizeff == 'test') {
     serverUrl = config.testUrl;
     sysUrl = config.sysTest;
 }
-if (process.env.kingold == 'production') {
+if (process.env.bizeff == 'production') {
     serverUrl = config.productionUrl;
     sysUrl = config.sysProduction;
 }
