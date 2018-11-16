@@ -1,13 +1,21 @@
 <template>
-    <div class="index-footer">footer</div>
+    <div class="index-footer">
+        <div class="footer-wrap">
+            {{company}} <br>
+            备案号：{{registeredNo}}
+        </div>
+    </div>
 </template>
 <script>
     import './index-footer.less';
+    import { company, registeredNo } from '../../tools/config';
     export default {
         name: 'index-footer',
         // props:['data','items'],
         data(){
             return {
+                registeredNo,
+                company,
                 name:'2222',
                 items:[]
             }

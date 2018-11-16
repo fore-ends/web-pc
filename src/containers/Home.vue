@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <el-row :gutter="20">
+        <!-- <el-row :gutter="20">
             <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
             <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
             <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
@@ -10,7 +10,8 @@
             <div :style="{color:watchIdNumber}">{{val | translatePate}}</div>
             <el-input v-model.trim="idNumber" placeholder="请输入身份证号号码"></el-input>
             <div><el-button @click.stop="clickV">{{btnText}}</el-button></div>
-        </div>
+        </div> -->
+        <p style="font-size:36px;text-align: center;padding-top:300px;font-family: '楷体';font-weight:bold;">亲，暂未开放，请稍等！</p>
     </div>
 </template>
 <script>

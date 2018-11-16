@@ -60,15 +60,6 @@ let get = (path, data = {}) => {
         }
 
         return {};
-    }).then(data => {
-        if (data.code != 200) {
-            Message({
-                showClose: true,
-                message: '测试代码',
-                type: 'error'
-            });
-        }
-        return data;
     }).catch(err => {
         console.log('err--->')
         console.log(err)

@@ -80,7 +80,7 @@ body {
     color: @color-text-secondary;
     font-size: 14px;
     text-size-adjust: 100% !important;
-    min-width: 1002px;
+    min-width: @warp-width;
     margin:0 auto;
 }
 html,body{
@@ -129,9 +129,23 @@ ul,ol,dl{
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-
+.dom-must{
+    dt:before{
+        content: "*";
+        font-weight:bold;
+        color:@color-red;
+        margin-right:3px;
+    }
+    
+}
 [v-cloak] {
     display: none;
+}
+.table-header-bar{
+    padding-bottom:16px;
+}
+.pagination-wrap{
+    padding-top:16px;
 }
 
 

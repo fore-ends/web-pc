@@ -15,6 +15,16 @@ const Detail = resolve => require(['../containers/Detail'], resolve);
 const Login = resolve => require(['../containers/Login'], resolve);
 const Safe = resolve => require(['../containers/Safe'], resolve);
 const Certify = resolve => require(['../containers/Certify'], resolve);
+const AccountGeneral = resolve => require(['../containers/AccountGeneral'], resolve);
+const MoneyDetail = resolve => require(['../containers/MoneyDetail'], resolve);
+const SpendGeneral = resolve => require(['../containers/SpendGeneral'], resolve);
+const SpendDetail = resolve => require(['../containers/SpendDetail'], resolve);
+const BillManage = resolve => require(['../containers/BillManage'], resolve);
+const BillAddress = resolve => require(['../containers/BillAddress'], resolve);
+const CloudSettlement = resolve => require(['../containers/CloudSettlement'], resolve);
+const CloudSigned = resolve => require(['../containers/CloudSigned'], resolve);
+const CloudFinance = resolve => require(['../containers/CloudFinance'], resolve);
+
 // import Home from '../containers/Home';
 // import Menus from '../containers/Menus';
 const title = '平台';
@@ -62,21 +72,96 @@ let routes = [{
         name: 'user',
         component: User,
         meta: {
-            title: '基本资料'
+            title: '基本资料',
+            belong: 'accountMs'
         }
     }, {
         path: 'certify',
         name: 'certify',
         component: Certify,
         meta: {
-            title: '实名认证'
+            title: '实名认证',
+            belong: 'accountMs'
         }
     }, {
         path: 'safe',
         name: 'safe',
         component: Safe,
         meta: {
-            title: '安全设置'
+            title: '安全设置',
+            belong: 'accountMs'
+        }
+    }, {
+        path: 'account-general',
+        name: 'account-general',
+        component: AccountGeneral,
+        meta: {
+            title: '账户总览',
+            belong: 'costCenter'
+        }
+    }, {
+        path: 'money-detail',
+        name: 'money-detail',
+        component: MoneyDetail,
+        meta: {
+            title: '收支明细',
+            belong: 'costCenter'
+        }
+    }, {
+        path: 'spend-general',
+        name: 'spend-general',
+        component: SpendGeneral,
+        meta: {
+            title: '消费总览',
+            belong: 'costCenter'
+        }
+    }, {
+        path: 'spend-detail',
+        name: 'spend-detail',
+        component: SpendDetail,
+        meta: {
+            title: '消费明细',
+            belong: 'costCenter'
+        }
+    }, {
+        path: 'bill-manage',
+        name: 'bill-manage',
+        component: BillManage,
+        meta: {
+            title: '发票管理',
+            belong: 'costCenter'
+        }
+    }, {
+        path: 'bill-address',
+        name: 'bill-address',
+        component: BillAddress,
+        meta: {
+            title: '发票收货地址管理',
+            belong: 'costCenter'
+        }
+    }, {
+        path: 'cloud-settlement',
+        name: 'cloud-settlement',
+        component: CloudSettlement,
+        meta: {
+            title: '云结算',
+            belong: 'pAndS'
+        }
+    }, {
+        path: 'cloud-signed',
+        name: 'cloud-signed',
+        component: CloudSigned,
+        meta: {
+            title: '云签约',
+            belong: 'pAndS'
+        }
+    }, {
+        path: 'cloud-finance',
+        name: 'cloud-finance',
+        component: CloudFinance,
+        meta: {
+            title: '云财务',
+            belong: 'pAndS'
         }
     }]
 }];

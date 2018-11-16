@@ -1,0 +1,44 @@
+@charset "UTF-8";
+@import "variables";
+.account-general{
+	padding-left:30px;
+	padding-right:30px;
+	.general-wrap{
+		>div{
+			&:not(:last-child){
+				margin-bottom: 20px;
+			}
+		}
+		.property{
+			
+		}
+		.el-card-self{
+			width:47.5%;
+			.el-card__body{
+				padding:0;
+				dl.dl-header{
+					padding:20px;
+					border-bottom:@border-default;
+				}
+				.card-inner{
+					padding:20px;
+					
+					min-height: 200px;
+					span:not(.money-text){
+						font-size: 36px;
+						font-weight:bold;
+					}
+				}
+			}
+		}
+		.account-record{
+			.money-in{
+				border-right:2px dashed @color-split;
+			}
+			.money-in,.money-out{
+				padding:28px 0;
+			}
+		}
+	}
+	
+}

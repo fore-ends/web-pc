@@ -1,94 +1,43 @@
 <template>
     <div flex="main:center cross:center" class="login">
         <div class="login-content">
-            <el-row class="login-tabs">
-                <el-col class="login-tab tab-login" 
-                    :class="selectedIndex == 0 ? 'selected' : ''"
-                    :span="12"
-                    @click.native="changeStatus(0)">登录</el-col>
-                <el-col class="login-tab" :span="12"
-                    :class="selectedIndex == 1 ? 'selected' : ''"
-                    @click.native="changeStatus(1)">注册</el-col>
-            </el-row>
-            <el-row class="row-wrap"
-                :class="selectedIndex == 1 ? 'has-move' : ''">
-                <el-col :span="12">
-                    <div flex="dir:top" class="login-form">
-                        <label ref="mobileS">
-                            <el-input
-                                name="mobileS"
-                                placeholder="请输入手机号"
-                                maxlength="11"
-                                v-model="mobileSign"
-                                @input="input"
-                                clearable>
-                            </el-input>
-                        </label>
-                        <label ref="passwordS">
-                            <el-input
-                                name="passwordS"
-                                placeholder="请输入密码"
-                                v-model="passwordSign"
-                                maxlength="20"
-                                type="password"
-                                clearable>
-                              </el-input>
-                        </label>
-                        <label>
-                            <el-button type="primary"
-                                class="btn-submit"
-                                :loading="loginLoading"
-                                @click.native="login">登录</el-button>
-                        </label>
-                        <label >还没有注册账号？<el-button type="text" @click.native="goRegister">去注册</el-button></label>
-                    </div>
-                </el-col>
-                <el-col :span="12">
-                    <div flex="dir:top" class="login-form">
-                        <label for="" ref="mobileR">
-                            <el-input
-                                name="mobileR"
-                                placeholder="请输入手机号"
-                                maxlength="11"
-                                v-model="mobileReg"
-                                clearable>
-                              </el-input>
-                        </label>
-                        <label flex="main:justify" ref="verify">
-                            <span>
-                                <el-input
-                                    name="verify"
-                                    placeholder="请输入验证码"
-                                    maxlength="6"
-                                    v-model="verify"
-                                    clearable>
-                                </el-input>
-                            </span>
-                            <span>
-                                <el-button type="primary" class="btn-v"
-                                    :disabled="vIsloading"
-                                    @click.stop="clickV">{{btnText}}</el-button>
-                            </span>
-                        </label>
-                        <label for="" ref="passwordR">
-                            <el-input
-                                name="passwordR"
-                                placeholder="请输入密码"
-                                v-model="passwordReg"
-                                type="password"
-                                clearable>
-                              </el-input>
-                        </label>
-                        <label for="">
-                            <el-button type="primary"
-                                class="btn-submit"
-                                :loading="registerLoading"
-                                @click.native="register"
-                                >注册</el-button>
-                        </label>
-                    </div>
-                </el-col>
-            </el-row>
+            <div flex="main:center" class="login-head">
+                <div>
+                    <img src="../images/logo.png" alt="bizeff">
+                </div>
+            </div>
+            <div flex="dir:top" class="login-form">
+                <label ref="mobile">
+                    <el-input
+                        name="mobile"
+                        size="large"
+                        placeholder="请输入手机号"
+                        maxlength="11"
+                        v-model="mobile"
+                        @input="input"
+                        clearable>
+                    </el-input>
+                </label>
+                <label ref="password">
+                    <el-input
+                        name="password"
+                        size="large"
+                        placeholder="请输入密码"
+                        v-model="password"
+                        maxlength="20"
+                        type="password"
+                        clearable>
+                      </el-input>
+                </label>
+                <label>
+                    <el-button type="primary"
+                        class="btn-submit"
+                        size="large"
+                        :loading="loginLoading"
+                        @click.native="login">登录</el-button>
+                </label>
+                <!-- <label >还没有注册账号？<el-button type="text" @click.native="goRegister">去注册</el-button></label> -->
+            </div>
         </div>
     </div>
 </template>
@@ -101,8 +50,8 @@
         name: 'login',
         data(){
             return {
-                mobileSign:'',//登录手机号
-                passwordSign:'',//登录密码
+                mobile:'',//登录手机号
+                password:'',//登录密码
                 selectedIndex:0,
                 mobileReg:'',//注册手机号
                 passwordReg:'',//注册密码
@@ -115,7 +64,7 @@
             }
         },
         created(){
-            this.setStatus();
+            
         },
         computed: {
 
@@ -125,19 +74,6 @@
             changeStatus(index){
                 this.selectedIndex = index;
                 session.setItem('selectedIndex',index);
-            },
-            setStatus(){
-                let { register } = this.$route.query;
-                if(register){
-                    //注册
-                    this.selectedIndex = 1;
-                }else{
-                    let selectedIndex = session.getItem('selectedIndex');
-                    if(selectedIndex){
-                        this.selectedIndex = selectedIndex;
-                    }
-                }
-                
             },
             //下发验证码
             clickV(){
@@ -162,25 +98,30 @@
             },
             //登录
             login(){
-                let { mobileSign, passwordSign } = this;
+                let { mobile, password } = this;
                 //校验手机号码
-                if(!this.checkMobile(mobileSign,'mobileS')){
+                if(!this.checkMobile(mobile,'mobile')){
                     return false;
                 }
 
                 //校验密码
-                if(!this.checkPassword(passwordSign,'passwordS')){
+                if(!this.checkPassword(password,'password')){
                     return false;
                 }
                 //登录
                 this.loginLoading = true;
+                // setTimeout(() => {
+                //     this.$router.push({
+                //         path:'/menus/user'
+                //     });
+                // },1000);
                 $api.post('/users',{
-                    mobile:mobileSign,
-                    password:passwordSign
+                    mobile,
+                    password
                 }).then(res=>{
                     this.loginLoading = false;
                     if(res.status == '100'){
-                        this.goRegister();
+                        // this.goRegister();
                     }else if(res.status == '1'){
                         this.$router.push({
                             path:'/menus/user'

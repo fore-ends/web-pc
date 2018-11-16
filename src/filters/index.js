@@ -4,7 +4,6 @@
 import {
     BigNumber
 } from 'bignumber.js';
-console.log(BigNumber)
 let x = 0.1;
 let y = 0.2;
 console.log(x + y);

@@ -125,6 +125,7 @@ export let onlyNumber = (val) => {
     if (val) {
         val = val.replace(/[^\d]/g, '');
     }
+    console.log(val);
     return val;
 };
 // 只能英文、数字、下划线

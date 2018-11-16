@@ -1,0 +1,48 @@
+@charset "UTF-8";
+@import "variables";
+.user{
+	.user-head{
+		border-bottom:1px dashed @color-split;
+	}
+	.user-tit{
+		font-size: 16px;
+		.el-icon-warning{
+			color:@color-primary;
+		}
+		span{
+			margin-left: 6px;
+		}
+	}
+	.user-wran{
+		color:@color-red;
+		font-size: 12px;
+		padding:10px 0;
+	}
+	.user-main{
+		padding:10px;
+		.user-main-com{
+			.user-com-title{
+				font-size: 17px;
+				color:@color-text;
+				margin-bottom:12px;
+				padding-left:6px;
+			}
+			.user-com-list{
+				dl{
+					margin-bottom:16px;
+					dt{
+						text-align:right;
+						min-width:200px;
+					}
+					dd{
+						color:@color-text;
+						width:400px;
+					}
+				}
+			}
+		}
+	}
+	.user-bottom{
+		padding-left:210px;
+	}
+}

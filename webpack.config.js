@@ -105,7 +105,7 @@ const config = {
         // new WebpackMd5Hash(),
         new HtmlWebpackPlugin({
             title: '标题',
-            favicon: '',
+            favicon: './src/images/favicon.png',
             chunks: ['ventor', 'tools', 'main'],
             inject: 'body',
             hash: true,

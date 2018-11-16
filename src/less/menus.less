@@ -1,16 +1,34 @@
+@charset "UTF-8";
+@import "variables";
 .menus-wrap{
+	>div{
+		width:100%;
+	}
+	.index-content-width{
+		max-width: @max-width;
+	}
 	.index-main{
 		padding:20px 30px;
 		.main-inner{
 			background-color:#fff;
 			padding:16px;
 			.inner-box{
-				padding-top: 10px;
+				padding-top: 20px;
 			}
 		}
 	}
 	.menus{
 		width:260px;
 		margin-right:20px;
+		.menus-title{
+			background-color:#fff;
+			font-size:16px;
+			color:@color-text;
+			padding:22px 30px;
+			border-bottom:1px solid @color-split;
+		}
+		.el-menu{
+			border-right:0;
+		}
 	}
 }
