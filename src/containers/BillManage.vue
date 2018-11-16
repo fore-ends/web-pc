@@ -23,11 +23,15 @@
 				<dl flex="main:justify cross:center" class="card-head">
 					<dt>发票抬头</dt>
 					<dd>
-						<el-button type="text" size="medium">修改</el-button>
+						<el-button type="text" size="medium" @click="editBillName">修改</el-button>
 					</dd>
 				</dl>
 				<div flex="main:center cross:center" class="card-content">
-					您还未填写发票信息，<el-button type="text" size="medium">现在填写</el-button>！
+                    <span v-if="billName">{{billName}}</span>
+					<span v-else>
+                        您还未填写发票信息，<el-button type="text" size="medium" @click="editBillName">现在填写</el-button>！               
+                    </span>
+                    
 				</div>
 			</el-card>
 			<el-card  :body-style="{ padding: '0px' }">
@@ -40,7 +44,7 @@
 					</dd>
 				</dl>
 				<div flex="main:center cross:center" class="card-content">
-					您还未填写邮寄地址，<el-button type="text" size="medium">现在填写</el-button>！
+					您还未填写邮寄地址，<el-button type="text" size="medium" @click="addressEdit">现在填写</el-button>！
 				</div>
 			</el-card>
 		</div>
@@ -124,10 +128,28 @@
                 :total="100">
             </el-pagination>
         </div>
+        <!-- 发票抬头 -->
+        <el-dialog
+            class="bill-head"
+            title="发票抬头"
+            :visible.sync="visible"
+            width="38%"
+            :before-close="handleClose">
+            <div class="form-wrap">
+                <el-input type="text" size="large" placeholder="请输入内容" v-model="billName2"></el-input>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="visible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogSure">确 定</el-button>
+            </span>
+        </el-dialog>
+        <!-- 发票管理 -->
+        <bill-address-edit :data = "dialogData" @billBack="billBack"></bill-address-edit>
 	</div>
 </template>
 <script>
 	import '../less/bill-manage.less';
+    import BillAddressEdit from '../components/Bill/AddressEdit';
 	export default {
 		name:'bill-manage',
 		data (){
@@ -196,8 +218,22 @@
                 ],
                 pageNo:1,
                 pageSize:10,
+                visible:true,
+                billName:'',
+                billName2:'',
+                dialogData:{
+                    visible:false,
+                    id:'',
+                    name:'',
+                    number:'',
+                    address:'',
+                    postcode:''
+                }
 			}
 		},
+        components:{
+            BillAddressEdit
+        },
 		methods:{
 			handleSizeChange(val){
                 console.log(val);
@@ -207,6 +243,33 @@
             },
             handleClick(scope){
                 console.log(scope);
+            },
+            //填写发票地址
+            addressEdit(){
+                this.dialogData.visible = true;
+                this.dialogData.name = '';
+                this.dialogData.number = '';
+                this.dialogData.address = '';
+                this.dialogData.postcode = '';
+            },
+            billBack(res){
+                console.log(res)
+                this.dialogData.visible = false;
+            },
+            //抬头修改
+            editBillName(){
+                this.billName2 = this.billName;
+                this.visible = true;
+            },
+            handleClose(done){
+                this.billName2 = '';
+                done();
+            },
+            dialogSure(){
+                if(this.billName2){
+                    this.billName = this.billName2;
+                    this.visible = false;
+                }
             }
 		}
 	}

@@ -93,12 +93,14 @@
     </div>
 </template>
 <script>
+
     import '../less/account-general.less';
     import $api from '../tools/api';
     import { cookie } from '../tools/store';
     import { checkIdNumber, verifyTime, onlyNumber, onlyStr } from '../tools/operation';
     import AccountRecharge from '../components/Account/Recharge';
     import AccountWithdraw from '../components/Account/Withdraw';
+    import _ from 'lodash/core';
     export default {
         name: 'account-general',
         data(){
@@ -113,6 +115,7 @@
             }
         },
         created(){
+            console.log(_);
             this.getData();
         },
         computed: {
@@ -131,7 +134,9 @@
             getData(){
                 $api.get('/users/account-general').then(res =>{
                     if(res.status == '1'){
-                        console.log(res.data);
+                        _.forEach(res.data,(item,key) => {
+                            this[key] = item;
+                        });
                     }
                 })
             },

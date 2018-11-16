@@ -165,17 +165,56 @@ let routes = [{
         }
     }]
 }];
+let beforeEach = ((to, from, next) => {
+    if (store.state.userName) {
+        next()
+    } else {
+        store.dispatch('getUserInfo')
+            .then(data => {
+                if (data.status == '0') {
+                    logout();
+                } else {
+                    next()
+                }
+            });
+    }
+})
 routes.map(route => {
-    route.beforeEnter = (to, from, next) => {
-        let {
-            meta
-        } = to;
-        let {
-            title
-        } = meta;
-        setTitle(title);
-        next();
-    };
+
+
+    if (route.name == 'menus') {
+        route.children.map(routeChild => {
+            routeChild.beforeEnter = (to, from, next) => {
+                let {
+                    meta
+                } = to;
+                let {
+                    title
+                } = meta;
+                setTitle(title);
+                if (!routeChild.meta.withoutLogin) { //此页面需要登录
+                    return beforeEach(to, from, next);
+                } else {
+                    next();
+                }
+            };
+        });
+    } else {
+        route.beforeEnter = (to, from, next) => {
+            let {
+                meta
+            } = to;
+            let {
+                title
+            } = meta;
+            setTitle(title);
+            if (!route.meta.withoutLogin) { //此页面需要登录
+                return beforeEach(to, from, next);
+            } else {
+                next();
+            }
+        };
+    }
 });
 routes.push({
     path: '*',

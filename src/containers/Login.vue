@@ -123,7 +123,7 @@
                     if(res.status == '100'){
                         // this.goRegister();
                     }else if(res.status == '1'){
-                        this.$router.push({
+                        this.$router.replace({
                             path:'/menus/user'
                         });
                     }else{

@@ -136,6 +136,10 @@ export let onlyStr = (val) => {
     }
     return val;
 };
+//登出
+export let logout = () => {
+    window.location.replace('/login');
+};
 let $operation = {
     setTitle
 }
