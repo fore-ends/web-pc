@@ -1,28 +1,32 @@
 <template>
     <div class="user">
         <div class="user-head">
-            <div class="user-tit">
+            <!-- <div class="user-tit">
                 <i class="el-icon-warning"></i><span>您的企业信息尚未完善，请完善企业信息</span>
-            </div>
+            </div> -->
             <p class="user-wran">请务必准确填写您公司真实信息，实名认证成功后此处将被替换为实名认证时提交的信息，且不能再被修改。</p>
         </div>
         <div class="user-main">
+
             <dl class="user-main-com user-base">
-                <dt class="user-com-title">基本信息</dt>
+                <dt class="user-avatar" flex="main:center cross:center">
+                    <img src="https://image-static.segmentfault.com/353/178/353178302-5bdfe2c52e3df_articlex" alt="">
+                </dt>
                 <dd class="user-com-list">
                     <dl flex="cross:center" class="user-name">
                         <dt>企业名称：</dt>
-                        <dd>智赋科技***有限公司</dd>
+                        <dd>{{name}}</dd>
                     </dl>
                     <dl flex="cross:center" class="">
-                        <dt>是否三证合一：</dt>
-                        <dd>是</dd>
+                        <dt>证件类型：</dt>
+                        <dd v-if="enterprise_info.enterprise_card_type == '02'">营业执照</dd>
+                        <dd v-if="enterprise_info.enterprise_card_type == '03'">统一社会信用代码</dd>
                     </dl>
                     <dl flex="cross:center" class="">
-                        <dt>统一信用代码号：</dt>
-                        <dd>9183726********92JSIEFK</dd>
+                        <dt>证件号：</dt>
+                        <dd>{{enterprise_info.enterprise_registration_no}}</dd>
                     </dl>
-                    <dl class="dom-must" flex="cross:center">
+                    <!-- <dl class="dom-must" flex="cross:center">
                         <dt>所在区域：</dt>
                         <dd flex="main:justify">
                             <el-select v-model="city" placeholder="请选择城市"
@@ -53,10 +57,10 @@
                                 placeholder="请输入营业地址"
                                 clearable></el-input>
                         </dd>
-                    </dl>
+                    </dl> -->
                 </dd>
             </dl>
-            <dl class="user-main-com">
+            <!-- <dl class="user-main-com">
                 <dt class="user-com-title">法人信息</dt>
                 <dd class="user-com-list">
                     <dl class="dom-must" flex="cross:center">
@@ -101,11 +105,11 @@
                         </dd>
                     </dl>
                 </dd>
-            </dl>
+            </dl> -->
         </div>
-        <div class="user-bottom">
+        <!-- <div class="user-bottom">
             <el-button type="primary" size="medium">保存</el-button>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
@@ -113,6 +117,7 @@
     import $api from '../tools/api';
     import { cookie } from '../tools/store';
     import { checkIdNumber, verifyTime, onlyNumber, onlyStr } from '../tools/operation';
+    import { mapState } from 'vuex';
     export default {
         name: 'user',
         data(){
@@ -146,7 +151,14 @@
             this.getList();
         },
         computed: {
-
+            ...mapState([
+                'user_uuid',
+                'name',
+                'mobile_no',
+                'email',
+                'merchant_info',
+                'enterprise_info'
+            ])
         },
         components: { },
         methods: {

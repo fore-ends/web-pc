@@ -9,6 +9,7 @@ import {
     setTitle
 } from '../tools/operation';
 const Home = resolve => require(['../containers/Home'], resolve);
+const Demo = resolve => require(['../containers/Demo'], resolve);
 const Menus = resolve => require(['../containers/Menus'], resolve);
 const User = resolve => require(['../containers/User'], resolve);
 const Detail = resolve => require(['../containers/Detail'], resolve);
@@ -32,8 +33,11 @@ let routes = [{
     path: '/',
     redirect: '/home'
 }, {
-    path: '/home',
-    component: Home,
+    path: '/',
+    redirect: '/home'
+}, {
+    path: '/demo',
+    component: Demo,
     meta: {
         title: title,
     },
@@ -41,7 +45,8 @@ let routes = [{
     path: '/login',
     component: Login,
     meta: {
-        title: '登录'
+        title: '登录',
+        withoutLogin: true
     }
 }, {
     path: '/menus',
@@ -166,12 +171,12 @@ let routes = [{
     }]
 }];
 let beforeEach = ((to, from, next) => {
-    if (store.state.userName) {
+    if (store.state.name) {
         next()
     } else {
         store.dispatch('getUserInfo')
             .then(data => {
-                if (data.status == '0') {
+                if (data.resp_code != 200) {
                     logout();
                 } else {
                     next()

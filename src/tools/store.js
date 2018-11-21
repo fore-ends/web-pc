@@ -85,16 +85,12 @@ cookie.getItem = (key) => {
         return null;
     }
 };
-cookie.setItem = ({
-    key,
-    value = '',
-    day = 30
-}) => {
+cookie.setItem = (key, value = '', day = 30) => {
     typeof value === 'object' ? value = JSON.stringify(value) : '';
     let d = new Date();
     d.setTime(d.getTime() + (day * 24 * 60 * 60 * 1000));
     let expires = 'expires=' + d.toGMTString();
-    document.cookie = key + '=' + value + '; ' + expires;
+    document.cookie = key + '=' + value + '; ' + expires + ';path=/';
     return null;
 };
 cookie.removeItem = (key) => {

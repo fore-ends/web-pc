@@ -28,6 +28,8 @@ import {
     Pagination,
     DatePicker,
     Tag,
+    Steps,
+    Step,
     Alert,
     Loading,
     MessageBox,
@@ -59,6 +61,8 @@ Vue.use(TableColumn);
 Vue.use(Pagination);
 Vue.use(DatePicker);
 Vue.use(Tag);
+Vue.use(Steps);
+Vue.use(Step);
 Vue.use(Loading.directive);
 
 Vue.prototype.$loading = Loading.service;
@@ -78,6 +82,7 @@ import store from './store';
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key]);
 });
+store.dispatch('getAccountInfo');
 new Vue({
     el: '#app',
     router,

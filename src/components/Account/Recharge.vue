@@ -32,7 +32,13 @@
 			    	</div>
 			    </div>
 		  	</el-tab-pane>
-		  	<el-tab-pane label="线下转账">线下转账</el-tab-pane>
+		  	<el-tab-pane label="线下转账">
+		  		<el-steps direction="vertical" :active="1">
+				    <el-step v-for="item in stepItems"
+				    	:title="item.title"
+				    	:description="item.description"></el-step>
+				</el-steps>
+		  	</el-tab-pane>
 		</el-tabs>
 	</div>
 </template>
@@ -75,6 +81,15 @@
 						name:'中国农业银行'
 					},{
 						name:'浦发银行'
+					}
+				],
+				stepItems:[
+					{
+						title:'请您 打款前务必 在本页面 填写 正确有效的付款银行账号户名。若预留的户名与实际打款的银行账号户名不一致，将导致无法充值到账。',
+						description:''
+					},{
+						title:'打款至您的专属收款账户，账户在收到银行汇款后将自动匹配到您的云账户，线下汇款的款项会自动充值到账户中。',
+						description:'转账途径 网上银行/手机银行/电汇/支票/北京同城柜台现金存款<br>收款户名 xxxxxxxxxxx<br>收款账号 xxxxxxxxxxxxxxxx<br>收款银行 xxxxxxxxxxxxxxxxxxxx'
 					}
 				]
 			}

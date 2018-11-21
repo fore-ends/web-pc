@@ -21,11 +21,7 @@ export let setTitle = (title) => {
 
 export let checkPhone = (phone) => {
     let regPhone = /^1[3|4|5|6|7|8|9]\d{9}$/;
-    if (regPhone.test(phone)) {
-        return true;
-    } else {
-        return false;
-    }
+    return regPhone.test(phone);
 };
 //身份证号校验
 export let checkIdNumber = (idCard) => {
@@ -67,11 +63,7 @@ export let checkIdNumber = (idCard) => {
 //邮箱
 export let checkEmail = (email) => {
     let regEmail = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
-    if (regEmail.test(email)) {
-        return true;
-    } else {
-        return false;
-    }
+    return regEmail.test(email);
 };
 //去掉前后空格
 export let trim = (str) => {
@@ -125,9 +117,19 @@ export let onlyNumber = (val) => {
     if (val) {
         val = val.replace(/[^\d]/g, '');
     }
-    console.log(val);
     return val;
 };
+//只能输入最多两位小数
+export let clearNoNum = (val) => {
+    val = val.replace(/[^\d.]/g, ""); //清除“数字”和“.”以外的字符   
+    val = val.replace(/\.{2,}/g, "."); //只保留第一个. 清除多余的   
+    val = val.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+    val = val.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'); //只能输入两个小数   
+    if (val.indexOf(".") < 0 && val != "") { //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额  
+        val = parseFloat(val);
+    }
+    return val;
+}
 // 只能英文、数字、下划线
 export let onlyStr = (val) => {
     val = val.toString();
@@ -135,6 +137,18 @@ export let onlyStr = (val) => {
         val = val.replace(/[^\w]/g, '');
     }
     return val;
+};
+//密码验证   //以字母开头，长度在6-18之间，只能包含字符、数字和下划线
+export let checkPsw = (val) => {
+    let reg = /^[a-zA-Z]\w{5,17}$/;
+    return reg.test(val);
+};
+//格式化银行卡号
+export let formatBankNumber = (val) => {
+    if (val) {
+        return val.replace(/\D/g, '').replace(/....(?!$)/g, '$& ');
+    }
+    return '';
 };
 //登出
 export let logout = () => {

@@ -45,7 +45,7 @@
                             <template slot="title">费用</template>
                             <el-menu-item index="/menus/account-general" flex="main:justify">
                                 <span>账户余额</span>
-                                <span>￥88.88</span>
+                                <span>￥{{balance_total | currencyFormat}}</span>
                             </el-menu-item>
                             <el-menu-item index="/menus/account-general?type=recharge">充值</el-menu-item>
                             <el-menu-item index="/menus/spend-general">消费记录</el-menu-item>
@@ -85,6 +85,7 @@
 </template>
 <script>
     import './index-header.less';
+    import {mapState} from 'vuex';
     export default {
         name: 'index-header',
         props:['data','items'],
@@ -94,33 +95,23 @@
                 activeIndex:'1',
                 avatar:'https://image-static.segmentfault.com/353/178/353178302-5bdfe2c52e3df_articlex',
                 userName:'萧十一郎',
-                isFocus:false
+                isFocus:false,
+
             }
         },
         created(){
 
         },
         computed: {
-            inputs:{
-                get:function(){
-                    console.log(this.data)
-                    return this.data;
-                },
-                set:function(newValue){
-
-                    console.log(newValue);
-                    // return newValue;
-                    this.inputVal = newValue;
-                    return newValue;
-                }
-            },
-            lists:function(){
-                let items = [];
-                this.items.map(item =>{
-                    items.push(item);
-                });
-                return items;
-            }
+            ...mapState([
+                'user_uuid',
+                'name',
+                'mobile_no',
+                'email',
+                'merchant_info',
+                'enterprise_info',
+                'balance_total'
+            ])
         },
         methods: {
             handleSelect(){

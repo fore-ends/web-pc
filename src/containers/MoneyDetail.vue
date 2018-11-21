@@ -29,7 +29,7 @@
                 </dd>
             </dl>
             <div>
-                <el-button type="primary">查询</el-button>
+                <el-button type="primary" @click="search">查询</el-button>
                 <el-button type="success">导出</el-button>
             </div>
         </div>
@@ -163,6 +163,22 @@
         },
         components: {  },
         methods: {
+            getData(){
+                $api.get('/list',{
+
+                }).then(res => {
+                    console.log(res);
+                });
+            },
+            //查询
+            search(){
+                this.pageNo = 1;
+                this.getData();
+            },
+            //导出
+            output(){
+                
+            },
             handleSizeChange(val){
                 console.log(val);
             },

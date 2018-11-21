@@ -2,7 +2,7 @@
 	<div flex="dir:top cross:center" class="certify-view">
 		<div>
 			<div class="certify-status">
-				<template v-if="status == '3'">
+				<template v-if="status == '11'">
 					<div class="icon-box" style="color:#409EFF;">
 						<i class="el-icon-lx-info"></i>
 					</div>
@@ -11,7 +11,7 @@
 						<p>请耐心等待审核结果（最长3个工作日完成审核）</p>
 					</div>
 				</template>
-				<template v-if="status == '2'">
+				<template v-if="status == '12'">
 					<div class="icon-box" style="color:#ec2a2a;">
 						<i class="el-icon-lx-roundclose"></i>
 					</div>
@@ -20,7 +20,7 @@
 						<p>请仔细核对提交信息，再<el-button type="text" @click.native="linkSubmit" size="medium">重新提交</el-button>！</p>
 					</div>
 				</template>
-				<template v-if="status == '1'">
+				<template v-if="status == '20'">
 					<div class="icon-box" style="color:#52C41A;">
 						<i class="el-icon-lx-roundcheck"></i>
 					</div>
@@ -32,11 +32,11 @@
 			<div class="certify-infor">
 				<dl flex="cross:center">
 					<dt>企业名称：</dt>
-					<dd>{{vdata.name}}</dd>
+					<dd>{{vdata.ent_name}}</dd>
 				</dl>
 				<dl flex="cross:center">
 					<dt>证件号码：</dt>
-					<dd>{{vdata.number}}</dd>
+					<dd>{{vdata.enterprise_registration_no}}</dd>
 				</dl>
 				<dl flex="cross:center">
 					<dt>认证时间：</dt>
@@ -85,13 +85,15 @@
 				type:Object
 			},
 			status:{
-				type:String,
-				default:'2'
+				type:String
+			},
+			time:{
+				type:String
 			}
 		},
 		data (){
 			return {
-
+				
 			}
 		},
 		methods:{

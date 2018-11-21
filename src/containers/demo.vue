@@ -1,5 +1,13 @@
 <template>
     <div class="user">
+        <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
+    <el-select v-model="select" slot="prepend" placeholder="请选择">
+      <el-option label="餐厅名" value="1"></el-option>
+      <el-option label="订单号" value="2"></el-option>
+      <el-option label="用户电话" value="3"></el-option>
+    </el-select>
+    <el-button slot="append" icon="el-icon-search"></el-button>
+  </el-input>
         <!-- <ul>
             <li v-for="item in items">
                 <template v-if="item.id == 1">
@@ -28,6 +36,7 @@
         </ul>
         <p>{{items.length}}</p> -->
         用户信息
+
     </div>
 </template>
 <script>
@@ -40,6 +49,8 @@
         data(){
             return {
                 name:'www',
+                input5:'',
+                select:'',
                 items:[
                     {
                         id:0,
@@ -55,8 +66,11 @@
             }
         },
         created(){
+            let sha1 = require('js-sha1');
+            console.log(sha1('0'))
             // setTimeout(() => { this.name = 'http' },2000);
-            this.getList();
+            // this.getList();
+            alert()
         },
         computed: {
 

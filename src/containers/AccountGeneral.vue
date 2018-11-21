@@ -36,7 +36,10 @@
                         <dl flex="cross:center">
                             <dt>预警阙值：</dt>
                             <dd>
-                                <el-input type="text" placeholder="请输入预警阙值" clearable></el-input>
+                                <el-input type="text" placeholder="请输入预警阙值" clearable
+                                    v-model="threshold"
+                                    @keyup.native="threshold = clearNoNum(threshold)"
+                                    @afterpaste.native="threshold = clearNoNum(threshold)"></el-input>
                             </dd>
                             <dd style="padding-left:16px;">
                                 <el-button type="primary">确定</el-button>
@@ -97,7 +100,7 @@
     import '../less/account-general.less';
     import $api from '../tools/api';
     import { cookie } from '../tools/store';
-    import { checkIdNumber, verifyTime, onlyNumber, onlyStr } from '../tools/operation';
+    import { checkIdNumber, verifyTime, clearNoNum, onlyStr } from '../tools/operation';
     import AccountRecharge from '../components/Account/Recharge';
     import AccountWithdraw from '../components/Account/Withdraw';
     import _ from 'lodash/core';
@@ -107,6 +110,7 @@
             return {
                 // status:'recharge',
                 switchVal:'',
+                threshold:'',
                 amount:0,
                 expenses:0,
                 receipts:0,
@@ -161,6 +165,21 @@
             goBill(){
                 this.$router.push({
                     path:'/menus/bill-manage'
+                })
+            },
+            //只能输入两位小数内的数字
+            clearNoNum(val){
+                return clearNoNum(val);
+            },
+            //提交阙值
+            postThreshold(){
+                let value = '100';
+                let switchVal = 1;
+                $api.post('/threshold',{
+                    value,
+                    switchVal
+                }).then(res => {
+                    console.log(res);
                 })
             }
         },

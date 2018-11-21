@@ -17,8 +17,11 @@
             </template>
         </div>
         <div v-else>
-            <certify-input v-if="status == '0'"></certify-input>
-            <certify-view v-else :status="status" :vdata="vdata"
+            <certify-input v-if="operation_status == '10'"></certify-input>
+            <certify-view v-else 
+                :status="operation_status"
+                :vdata="operation_info"
+                :time = "'2018-11-11 11:11:11'"
                 @linkSubmit="linkSubmit"></certify-view>
         </div>
     </div>
@@ -28,14 +31,16 @@
     import $api from '../tools/api';
     import CertifyInput from '../components/Certify/Input';//填写
     import CertifyView from '../components/Certify/View';//
+    import _ from 'lodash/core';
     export default {
         name: 'certify',
         data(){
             return {
-                status:'2',//0：未提交，1：成功，2：失败，3：审核中
-                vdata:{
-                    name:'智赋科技***公司',
-                    number:'9839******SKJ12',
+                showStaus:'0',
+                operation_status:'12',//操作状态 10-提交 11-审核中 20-认证成功 12-驳回
+                operation_info:{
+                    ent_name:'智赋科技***公司',
+                    enterprise_registration_no:'9839******SKJ12',
                     time:'2018-11-11 11:11:11'
                 },
                 showGuide:false,
@@ -59,6 +64,17 @@
         methods: {
             linkSubmit(){
                 this.status = '0';
+            },
+            //取详
+            getData(){
+                let mer_uuid = this.$store.state.mer_uuid;
+                $api.get(`/bizeff/merchants/${mer_uuid}/certificates`).then(res => {
+                    if(res.resp_code == 200){
+                        _.forEach(res.data,(item,key) => {
+                            this[key] = item;
+                        });
+                    }
+                })
             }
         },
         destroyed(){
