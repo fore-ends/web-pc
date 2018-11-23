@@ -112,6 +112,9 @@
                 //     });
                 // },1000);
                 let url = `${$api.serverUrl}/bizeff/merchants/login`;
+                this.$router.replace({
+                    path:'/menus/account-general'
+                });
                 $api.post2('/bizeff/merchants/login').then(res =>{
                     if(res.resp_code == 200){
                         //登录成功

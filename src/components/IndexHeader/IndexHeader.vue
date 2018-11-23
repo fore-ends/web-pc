@@ -54,9 +54,9 @@
                         </el-submenu>
                         <el-submenu index="3">
                             <template slot="title">帮助与文档</template>
-                            <el-menu-item index="2-1">API文档</el-menu-item>
-                            <el-menu-item index="2-2">帮助中心</el-menu-item>
-                            <el-menu-item index="2-3">操作手册</el-menu-item>
+                            <el-menu-item index="/api">API文档</el-menu-item>
+                            <el-menu-item index="/help">帮助中心</el-menu-item>
+                            <el-menu-item index="/manual">操作手册</el-menu-item>
                         </el-submenu>
                     </el-menu>
                 </div>

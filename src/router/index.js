@@ -25,6 +25,9 @@ const BillAddress = resolve => require(['../containers/BillAddress'], resolve);
 const CloudSettlement = resolve => require(['../containers/CloudSettlement'], resolve);
 const CloudSigned = resolve => require(['../containers/CloudSigned'], resolve);
 const CloudFinance = resolve => require(['../containers/CloudFinance'], resolve);
+const Api = resolve => require(['../containers/Home'], resolve);
+const Help = resolve => require(['../containers/Home'], resolve);
+const Manual = resolve => require(['../containers/Home'], resolve);
 
 // import Home from '../containers/Home';
 // import Menus from '../containers/Menus';
@@ -46,6 +49,27 @@ let routes = [{
     component: Login,
     meta: {
         title: '登录',
+        withoutLogin: true
+    }
+}, {
+    path: '/api',
+    component: Api,
+    meta: {
+        title: 'API文档',
+        withoutLogin: true
+    }
+}, {
+    path: '/help',
+    component: Help,
+    meta: {
+        title: '帮助中心',
+        withoutLogin: true
+    }
+}, {
+    path: '/manual',
+    component: Manual,
+    meta: {
+        title: '操作手册',
         withoutLogin: true
     }
 }, {
@@ -176,10 +200,14 @@ let beforeEach = ((to, from, next) => {
     } else {
         store.dispatch('getUserInfo')
             .then(data => {
-                if (data.resp_code != 200) {
-                    logout();
+                if (data) {
+                    if (data.resp_code != 200) {
+                        logout();
+                    } else {
+                        next()
+                    }
                 } else {
-                    next()
+                    logout();
                 }
             });
     }

@@ -195,6 +195,7 @@ let postSys = (path, data = {}) => {
 const $api = {
     get,
     post,
+    post2,
     getSys,
     postSys,
     serverUrl

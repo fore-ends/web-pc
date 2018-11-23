@@ -17,7 +17,8 @@ actions.getUserInfo = ({
 }) => {
 	return getUserInfo()
 		.then(data => {
-			if (data.resp_code == 200) {
+			console.log('ddd', data);
+			if (data && data.resp_code == 200) {
 				//存储/更新 mer_uuid
 				cookie.setItem('bizeffNo', data.data.mer_uuid);
 				commit('setUserInfo', data.data);
@@ -35,7 +36,7 @@ actions.getAccountInfo = ({
 	commit
 }) => {
 	return getAccountInfo().then(data => {
-		if (data.resp_code == 200) {
+		if (data && data.resp_code == 200) {
 			commit('setAccountInfo', data.data);
 		}
 		return data;

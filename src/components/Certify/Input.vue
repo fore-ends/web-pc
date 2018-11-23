@@ -191,7 +191,7 @@
             </div>
         </div>
         <div class="input-bottom">
-            <el-button type="primary" size="medium">提交认证</el-button>
+            <el-button type="primary" size="medium" @click="submit">提交认证</el-button>
             <el-button size="medium">取消</el-button>
         </div>
     </div>
@@ -271,10 +271,12 @@
 <script>
     import $api from '../../tools/api';
     import { cookie } from '../../tools/store';
-    import { checkIdNumber, verifyTime, onlyNumber, onlyStr, formatBankNumber } from '../../tools/operation';
+    import { checkIdNumber, verifyTime, onlyNumber, onlyStr, formatBankNumber, trim } from '../../tools/operation';
     import pcaCode from '../../data/pca-code';
+    import _ from 'lodash/core';
     export default {
         name: 'certify-input',
+        props:['data'],
         data(){
             return {
                 ent_name:'',
@@ -293,7 +295,7 @@
                 account_name:'',//账户名称
                 account_number:'',//账户号
                 corporation_name:'',//法人姓名
-                corporation_id_type:'',//法人证件类型,
+                corporation_id_type:'0',//法人证件类型,
                 corporation_id_no:'',//法人证件号码,
                 mobile_no:'',//联系电话
                 business_area:'',//所在区域
@@ -313,6 +315,9 @@
                         label: '驾照'
                     }
                 ],
+                enterprise_card_file:'',
+                corporation_id_face_file:'',
+                corporation_id_back_file:'',
                 attachmentItems:{
                     enterprise_card_file:{
                         title:'法定代表人证件正面',
@@ -354,7 +359,7 @@
         created(){
             // setTimeout(() => { this.name = 'http' },2000);
             // this.getList();
-            // alert()
+            this.getData(this.data);
         },
         computed: {
             cityOptions:function(){
@@ -386,7 +391,8 @@
                     }
                 }
                 return '';
-            }
+            },
+
         },
         components: {  },
         methods: {
@@ -433,6 +439,133 @@
             //格式化 银行卡
             formatBankNumber(input){
                 return formatBankNumber(input);
+            },
+            //提交
+            submit(){
+                let {
+                    ent_name,enterprise_card_type,
+                    enterprise_registration_no,
+                    opening_bank,
+                    account_name,
+                    account_number,
+                    corporation_name,
+                    corporation_id_type,//法人证件类型,
+                    corporation_id_no,//法人证件号码,
+                    mobile_no,//联系电话
+                    business_area,//所在区域
+                    business_address,//营业地址
+                    provinceName,//省
+                    cityName,//市
+                    countyName,//县
+                    enterprise_card_file,
+                    corporation_id_face_file,
+                    corporation_id_back_file
+                } = this;
+                //校验
+                if(!trim(ent_name)){
+                    this.messageError('请填写企业名称！');
+                    return false;
+                }
+                if(!trim(enterprise_registration_no)){
+                    this.messageError('请填写企业证件号码！');
+                    return false;
+                }
+                if(!trim(enterprise_registration_no)){
+                    this.messageError('请填写企业证件号码！');
+                    return false;
+                }
+                if(!trim(opening_bank)){
+                    this.messageError('请填写开户行！');
+                    return false;
+                }
+                if(!trim(account_name)){
+                    this.messageError('请填写账户名称！');
+                    return false;
+                }
+                if(!trim(account_number)){
+                    this.messageError('请填写账户号！');
+                    return false;
+                }
+                if(!trim(corporation_name)){
+                    this.messageError('请填写法人姓名！');
+                    return false;
+                }
+                if(!trim(corporation_id_no)){
+                    this.messageError('请填写法人证件号码！');
+                    return false;
+                }
+                if(!checkIdNumber(corporation_id_no)){
+                    this.messageError('请填正确格式的身份证号码！');
+                    return false;
+                }
+                if(!trim(mobile_no)){
+                    this.messageError('请填写联系电话！');
+                    return false;
+                }
+                if(!provinceName){
+                    this.messageError('请选择联系地址！');
+                    return false;
+                }
+                // if(!enterprise_card_file){
+                //     this.messageError('请上传法定代表人证件正面！');
+                //     return false;
+                // }
+                // if(!corporation_id_face_file){
+                //     this.messageError('请上传法定代表人证件反面！');
+                //     return false;
+                // }
+                // if(!corporation_id_back_file){
+                //     this.messageError('请上传营业执照！');
+                //     return false;
+                // }
+                //处理地址
+                business_address = `${provinceName}-${cityName}-${countyName}`;
+                let mer_uuid = this.$store.state.mer_uuid;
+                $api.post(`/bizeff/merchants/${mer_uuid}/certificates`).then(res =>{
+
+                })
+            },
+            messageError(message){
+                this.$message({
+                    type:'error',
+                    message,
+                    showClose:true
+                });
+            },
+            getData(data){
+                console.log(data);
+                //返显详情
+                _.forEach(data,(item,key) => {
+                    this[key] = item;
+                    //处理地址
+                    if(key == 'business_area'){
+                        let arr = item.split('-');
+                        //省
+                        this.provinceOptions.map(({value,label}) => {
+                            if(label == arr[0]){
+                                this.province = value;
+                            }
+                        });
+                        //市
+                        this.cityOptions.map(({value,label}) => {
+                            if(label == arr[1]){
+                                this.city = value;
+                            }
+                        });
+                        //区
+                        this.countyOptions.map(({value,label}) => {
+                            if(label == arr[2]){
+                                this.county = value;
+                            }
+                        })
+                    }
+                });
+            }
+        },
+        watch:{
+            data:function(newData,oldData){
+                console.log(newData);
+                this.getData(newData);
             }
         },
         destroyed(){

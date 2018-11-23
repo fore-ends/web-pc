@@ -218,7 +218,7 @@
                 ],
                 pageNo:1,
                 pageSize:10,
-                visible:true,
+                visible:false,
                 billName:'',
                 billName2:'',
                 dialogData:{

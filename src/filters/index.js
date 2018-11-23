@@ -18,11 +18,20 @@ let add0 = (input) => {
 };
 export let currencyFormat = (input) => {
     if ((input == null) || (input == undefined)) {
-        return '--';
+        return '0.00';
     }
     let ouputs = input.toString();
     ouputs = ouputs.split('.');
     return ouputs[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,') + '.' + add0(ouputs[1]);
+};
+export let currencyRangeFormat = (input) => {
+    if ((input == null) || (input == undefined)) {
+        return '0.00';
+    }
+    if (Number(input) > 10000) {
+        let a = new BigNumber(input);
+        return Number(a.div(10000)) + '万';
+    }
 };
 export let idCardFormat = (input) => {
     if (!input) {

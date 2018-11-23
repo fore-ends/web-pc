@@ -13,7 +13,7 @@
                         </dd>
                     </dl>
                     <div flex="main:center cross:center" class="card-inner">
-                        <span>￥{{amount | currencyFormat}}</span>
+                        <span>￥{{balance_total | currencyFormat}}</span>
                     </div>
                 </el-card>
                 <el-card class="el-card-self">
@@ -25,7 +25,7 @@
                         </dd>
                     </dl>
                     <div flex="main:center cross:center" class="card-inner">
-                        <span>￥{{bill | currencyFormat}}</span>
+                        <span>￥{{can_invoice | currencyFormat}}</span>
                     </div>
                 </el-card>
 
@@ -67,11 +67,11 @@
                     <div flex="main:justify box:mean" class="card-inner">
                         <div flex="dir:top main:justify cross:center" class="money-in">
                             <span class="money-text">账户入账</span>
-                            <span>￥{{expenses | currencyFormat}}</span>
+                            <span>￥{{account_in | currencyFormat}}</span>
                         </div>
                         <div flex="dir:top main:justify cross:center" class="money-out">
                             <span class="money-text">账户出账</span>
-                            <span>￥{{receipts | currencyFormat}}</span>
+                            <span>￥{{account_out | currencyFormat}}</span>
                         </div>
                     </div>
                 </el-card>
@@ -84,7 +84,7 @@
                         </dd>
                     </dl>
                     <div flex="main:center cross:center" class="card-inner">
-                        <span>￥{{spend | currencyFormat}}</span>
+                        <span>￥{{consumption_month | currencyFormat}}</span>
                     </div>
                 </el-card>
             </div>
@@ -109,13 +109,14 @@
         data(){
             return {
                 // status:'recharge',
+                mer_uuid:this.$store.state.mer_uuid,
                 switchVal:'',
                 threshold:'',
-                amount:0,
-                expenses:0,
-                receipts:0,
-                bill:0,
-                spend:0,
+                balance_total:100030,//账户总额
+                can_invoice:0,//可开发票金额
+                account_in:0,//入账(账户入账),
+                account_out:0,//出账(账户出账),
+                consumption_month:0,//本月消费,
             }
         },
         created(){
@@ -136,8 +137,8 @@
         methods: {
             //获取数据
             getData(){
-                $api.get('/users/account-general').then(res =>{
-                    if(res.status == '1'){
+                $api.get(`/bizeff/merchants/${this.mer_uuid}/accounts`).then(res =>{
+                    if(res.resp_code == '1'){
                         _.forEach(res.data,(item,key) => {
                             this[key] = item;
                         });
