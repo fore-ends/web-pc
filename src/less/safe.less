@@ -45,6 +45,23 @@
 			width:92px;
 		}
 	}
+	.flex-wrap{
+		width:620px;
+		transition: all .3s;
+		>div{
+			width:50%;
+		}
+		&.new-phone{
+			transform: translateX(-50%);
+		}
+		
+	}
+}
+.dialog-phone{
+	overflow:hidden;
+	.span-el-input{
+		margin-right: 10px;
+	}
 }
 .dialog-psw{
 	dl{

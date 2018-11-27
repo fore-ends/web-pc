@@ -70,7 +70,7 @@
                         <el-dropdown-menu slot="dropdown" style="min-width:180px;">
                             <el-dropdown-item disabled>
                                 <div flex="main:justify" class="dropdown-u-infor">
-                                    <span class="ellipsis" style="width:66px">{{mer_name}}</span>
+                                    <span class="ellipsis" style="width:66px">{{user_name}}</span>
                                     <span>实名认证</span>
                                 </div>
                                 
@@ -113,7 +113,8 @@
                 'email',
                 'merchant_info',
                 'enterprise_info',
-                'balance_total'
+                'balance_total',
+                'user_name'
             ])
         },
         methods: {

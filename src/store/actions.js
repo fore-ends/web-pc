@@ -30,9 +30,25 @@ actions.getUserInfo = ({
 };
 
 //账户信息  （余额等）
-let getAccountInfo = () => {
+let getBalances = () => {
 	let mer_uuid = cookie.getItem('bizeffNo');
 	return $api.get(`/bizeff/merchants/${mer_uuid}/balances`);
+};
+actions.getBalances = ({
+	commit
+}) => {
+	return getBalances().then(data => {
+		if (data && data.resp_code == 200) {
+			commit('setBalances', data.data);
+		}
+		return data;
+	})
+}
+
+//账号信息  （当前账号）
+let getAccountInfo = () => {
+	let mer_uuid = cookie.getItem('bizeffNo');
+	return $api.get(`/bizeff/merchants/${mer_uuid}/operators`);
 };
 actions.getAccountInfo = ({
 	commit

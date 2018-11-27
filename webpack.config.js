@@ -104,7 +104,7 @@ const config = {
         new webpack.NoEmitOnErrorsPlugin(),
         // new WebpackMd5Hash(),
         new HtmlWebpackPlugin({
-            title: '标题',
+            title: '智赋云',
             favicon: './src/images/favicon.png',
             chunks: ['ventor', 'tools', 'main'],
             inject: 'body',

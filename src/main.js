@@ -82,7 +82,14 @@ import store from './store';
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key]);
 });
-// store.dispatch('getAccountInfo');
+if (window.location.pathname.indexOf('/login') < 0) {
+    //非登录
+    //当前用户信息
+    store.dispatch('getAccountInfo');
+    //账户
+    store.dispatch('getBalances');
+}
+
 new Vue({
     el: '#app',
     router,
