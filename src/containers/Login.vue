@@ -64,7 +64,7 @@
         },
         created(){
             //test
-            cookie.setItem('bizeffNo','99999',1);
+            // cookie.setItem('bizeffNo','99999',1);
         },
         computed: {
 
@@ -106,21 +106,14 @@
                 }
                 //登录
                 this.loginLoading = true;
-                // setTimeout(() => {
-                //     this.$router.push({
-                //         path:'/menus/user'
-                //     });
-                // },1000);
-                let url = `${$api.serverUrl}/bizeff/merchants/login`;
-                this.$router.replace({
-                    path:'/menus/account-general'
-                });
-                $api.post2('/bizeff/merchants/login').then(res =>{
+                
+                $api.post2('/bizeff/merchants/login',{
+                    user_name:userName,
+                    password
+                }).then(res =>{
+                    this.loginLoading = false;
                     if(res.resp_code == 200){
                         //登录成功
-                        _.forEach(res.data,(item,key) => {
-                            store.state[key] = item;
-                        });
                         cookie.setItem('bizeffNo',res.data.mer_uuid);
                         this.$router.replace({
                             path:'/menus/account-general'
@@ -158,15 +151,15 @@
                     this.addClass(this.$refs[ref],'error-color');
                     return false;
                 }
-                if(!checkPsw(password)){
-                    this.$message({
-                        showClose:true,
-                        message:'密码请“以字母开头，长度在6-18之间，只能包含字符、数字和下划线”',
-                        type:'error'
-                    });
-                    this.addClass(this.$refs[ref],'error-color');
-                    return false;
-                }
+                // if(!checkPsw(password)){
+                //     this.$message({
+                //         showClose:true,
+                //         message:'密码请“以字母开头，长度在6-18之间，只能包含字符、数字和下划线”',
+                //         type:'error'
+                //     });
+                //     this.addClass(this.$refs[ref],'error-color');
+                //     return false;
+                // }
                 return true;
             },
             //添加清除样式事件

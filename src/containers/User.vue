@@ -15,7 +15,7 @@
                 <dd class="user-com-list">
                     <dl flex="cross:center" class="user-name">
                         <dt>企业名称：</dt>
-                        <dd>{{name}}</dd>
+                        <dd>{{mer_name}}</dd>
                     </dl>
                     <dl flex="cross:center" class="">
                         <dt>证件类型：</dt>
@@ -123,6 +123,7 @@
         data(){
             return {
                 city:'',
+                // mer_name:'',
                 country:'',
                 options: [
                     {
@@ -153,7 +154,7 @@
         computed: {
             ...mapState([
                 'user_uuid',
-                'name',
+                'mer_name',
                 'mobile_no',
                 'email',
                 'merchant_info',

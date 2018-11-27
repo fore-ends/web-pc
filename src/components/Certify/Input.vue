@@ -192,7 +192,7 @@
         </div>
         <div class="input-bottom">
             <el-button type="primary" size="medium" @click="submit">提交认证</el-button>
-            <el-button size="medium">取消</el-button>
+            <el-button size="medium" @click="back">取消</el-button>
         </div>
     </div>
 </template>
@@ -271,7 +271,7 @@
 <script>
     import $api from '../../tools/api';
     import { cookie } from '../../tools/store';
-    import { checkIdNumber, verifyTime, onlyNumber, onlyStr, formatBankNumber, trim } from '../../tools/operation';
+    import { checkIdNumber, verifyTime, onlyNumber, onlyStr, formatBankNumber, trim, checkMob, checkPhone } from '../../tools/operation';
     import pcaCode from '../../data/pca-code';
     import _ from 'lodash/core';
     export default {
@@ -502,6 +502,10 @@
                     this.messageError('请填写联系电话！');
                     return false;
                 }
+                if(!checkMob(mobile_no) && !checkPhone(mobile_no)){
+                    this.messageError('请填正确的联系电话！');
+                    return false;
+                }
                 if(!provinceName){
                     this.messageError('请选择联系地址！');
                     return false;
@@ -560,6 +564,9 @@
                         })
                     }
                 });
+            },
+            back(){
+                this.$router.back();
             }
         },
         watch:{

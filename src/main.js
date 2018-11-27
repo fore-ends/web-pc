@@ -82,7 +82,7 @@ import store from './store';
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key]);
 });
-store.dispatch('getAccountInfo');
+// store.dispatch('getAccountInfo');
 new Vue({
     el: '#app',
     router,

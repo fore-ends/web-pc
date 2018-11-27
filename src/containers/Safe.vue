@@ -12,7 +12,7 @@
                 </dl>
                 <dl flex="cross:center">
                     <dt>账号ID：</dt>
-                    <dd>{{operator_no}}</dd>
+                    <dd>{{user_name}}</dd>
                 </dl>
                 <dl flex="cross:center">
                     <dt>开通时间：</dt>
@@ -177,8 +177,9 @@
         data(){
             return {
                 mer_uuid:this.$store.state.mer_uuid,
+                operator_uuid:'',
                 operator_name:'www',
-                operator_no:'',
+                user_name:'',
                 created_time:'',
                 mobile_no:'',
                 email:'',
@@ -212,7 +213,7 @@
         methods: {
             //取信息
             getData(){
-                $api.get(`/bizeff/merchants/${this.mer_uuid}/operator`).then(res =>{
+                $api.get(`/bizeff/merchants/${this.mer_uuid}/operators`).then(res =>{
                     if(res.resp_code == 200){
                         _.forEach(res.data,(item,key) => {
                             this[key] = item;
@@ -363,22 +364,22 @@
                     newPassword,
                     newPassword2
                 } = this;
-                if(!checkPsw(password)){
-                    this.$message({
-                        message: '输入旧密码格式有误！',
-                        type: 'error',
-                        showClose:true
-                    });
-                    return false;
-                }
-                if(!checkPsw(newPassword)){
-                    this.$message({
-                        message: '输入新密码格式有误！',
-                        type: 'error',
-                        showClose:true
-                    });
-                    return false;
-                }
+                // if(!checkPsw(password)){
+                //     this.$message({
+                //         message: '输入旧密码格式有误！',
+                //         type: 'error',
+                //         showClose:true
+                //     });
+                //     return false;
+                // }
+                // if(!checkPsw(newPassword)){
+                //     this.$message({
+                //         message: '输入新密码格式有误！',
+                //         type: 'error',
+                //         showClose:true
+                //     });
+                //     return false;
+                // }
                 if( newPassword != newPassword2 ){
                     this.$message({
                         message: '新密码两次输入不一致！',
@@ -388,10 +389,32 @@
                     return false;
                 }
                 
-                this.clearPswDialog();
+                
                 this.pswLoading = true;
                 //ajax
-                // this.pswDialogVisible = false;
+                $api.post(`/bizeff/merchants/${this.mer_uuid}/operators`,{
+                    operator_uuid:this.operator_uuid,
+                    user_name:this.user_name,
+                    password:newPassword
+                }).then(res => {
+                    if(res.resp_code == 200){
+                        this.pswDialogVisible = false;
+                        this.clearPswDialog();
+                        this.$message({
+                            type:'success',
+                            message:'修改密码成功！',
+                            showClose:true
+                        });
+                    }else{
+                        this.$message({
+                            type:'error',
+                            message:res.resp_message,
+                            showClose:true
+                        });
+                    }
+                    
+                })
+                // 
             },
             //清除修改密码输入记录
             clearPswDialog(){

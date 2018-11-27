@@ -8,9 +8,11 @@ import $api from '../tools/api';
 import {
 	cookie
 } from '../tools/store';
+
 // 商户信息
 let getUserInfo = () => {
-	return $api.get('/bizeff/merchants');
+	let mer_uuid = cookie.getItem('bizeffNo');
+	return $api.get(`/bizeff/merchants/${mer_uuid}`);
 };
 actions.getUserInfo = ({
 	commit
@@ -19,8 +21,8 @@ actions.getUserInfo = ({
 		.then(data => {
 			console.log('ddd', data);
 			if (data && data.resp_code == 200) {
-				//存储/更新 mer_uuid
-				cookie.setItem('bizeffNo', data.data.mer_uuid);
+				//存储/更新 mer_uuid  bizeffNo即为mer_uuid;
+				cookie.setItem('bizeffNo', data.data.mer_uuid, 1);
 				commit('setUserInfo', data.data);
 			}
 			return data;

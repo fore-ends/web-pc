@@ -23,6 +23,11 @@ export let checkPhone = (phone) => {
     let regPhone = /^1[3|4|5|6|7|8|9]\d{9}$/;
     return regPhone.test(phone);
 };
+//校验座机
+export let checkMob = (mob) => {
+    let regMob = /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/; // 座机格式
+    return regMob.test(mob);
+};
 //身份证号校验
 export let checkIdNumber = (idCard) => {
     let regIdCard = /^(^[1-9]\d{7}((0[1-9])|(1[0-2]))(0[1-9]|([1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0[1-9])|(1[0-2]))((0[1-9]|[1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/;

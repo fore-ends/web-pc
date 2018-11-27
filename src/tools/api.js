@@ -11,11 +11,9 @@ import {
     Message,
     Loading
 } from 'element-ui';
-// Message({
-//     showClose: true,
-//     message: '测试代码',
-//     type: 'error'
-// });
+import {
+    logout
+} from './operation';
 let serverUrl = config.devUrl;
 let sysUrl = config.sysDev;
 if (process.env.bizeff == 'test') {
@@ -40,7 +38,6 @@ let $query = (data) => {
     return str.join('&');
 };
 let get = (path, data = {}) => {
-    data.callSystemID = '3102';
     data.t = new Date().getTime();
     let url = '';
     //获取 mer_uuid
@@ -51,23 +48,17 @@ let get = (path, data = {}) => {
     } else {
         url = `${serverUrl + path}`
     }
-    const loading = Loading.service({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-    });
     return axios({
         url,
         method: 'get',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'mer_uuid': mer_uuid
+            mer_uuid,
+            'sequence_no': new Date().getTime()
         },
         params: data,
         withCredentials: true
     }).then(response => {
-        loading.close();
         if (response.status == 200) {
 
             return response.data;
@@ -75,12 +66,11 @@ let get = (path, data = {}) => {
 
         return {};
     }).then(data => {
-        if (data.code == 1220) {
-            // logout();
+        if (data.resp_code == 401) {
+            logout();
         }
         return data;
     }).catch(err => {
-        loading.close();
         console.log('err--->')
         console.log(err)
     })
@@ -101,29 +91,21 @@ let post = (path, data = {}) => {
     }
     //获取 mer_uuid
     let mer_uuid = cookie.getItem('bizeffNo');
-    const loading = Loading.service({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-    });
     return axios({
         url,
         method: 'post',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'mer_uuid': mer_uuid
+            'mer_uuid': mer_uuid,
+            'sequence_no': new Date().getTime()
         },
         params: {
-            t: new Date().getTime(),
-            callSystemID: '3102'
-
+            t: new Date().getTime()
         },
         withCredentials: true,
         dataType: 'json',
-        data: $query(data)
+        data: data
     }).then(response => {
-        loading.close();
         if (response.status == 200) {
 
             return response.data;
@@ -131,12 +113,11 @@ let post = (path, data = {}) => {
             return {};
         }
     }).then(data => {
-        if (data.code == 1220) {
-            // logout();
+        if (data.code == 401) {
+            logout();
         }
         return data;
     }).catch(err => {
-        loading.close();
         console.log('err--->')
     })
 
@@ -149,28 +130,20 @@ let post2 = (path, data = {}) => {
     } else {
         url = `${serverUrl + path}`;
     }
-    const loading = Loading.service({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-    });
     return axios({
         url,
         method: 'post',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
+            'sequence_no': new Date().getTime()
         },
         params: {
-            t: new Date().getTime(),
-            callSystemID: '3102'
-
+            t: new Date().getTime()
         },
         withCredentials: true,
         dataType: 'json',
-        data: $query(data)
+        data: data
     }).then(response => {
-        loading.close();
         if (response.status == 200) {
 
             return response.data;
@@ -178,12 +151,11 @@ let post2 = (path, data = {}) => {
             return {};
         }
     }).then(data => {
-        if (data.code == 1220) {
+        if (data.code == 401) {
             // logout();
         }
         return data;
     }).catch(err => {
-        loading.close();
         console.log('err--->')
     })
 

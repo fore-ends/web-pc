@@ -64,12 +64,16 @@
                     <el-dropdown class="user-dropdown" @command="handleCommand">
                         <span class="">
                             <router-link to="/menus/user">
-                                <img class="user-avatar" :src="avatar" :alt="userName">
+                                <img class="user-avatar" :src="avatar" >
                             </router-link>
                         </span>
-                        <el-dropdown-menu slot="dropdown" style="min-width:160px;">
-                            <el-dropdown-item flex="main:justify">
-                                <span>萧十一郎</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>实名认证</span>
+                        <el-dropdown-menu slot="dropdown" style="min-width:180px;">
+                            <el-dropdown-item disabled>
+                                <div flex="main:justify" class="dropdown-u-infor">
+                                    <span class="ellipsis" style="width:66px">{{mer_name}}</span>
+                                    <span>实名认证</span>
+                                </div>
+                                
                             </el-dropdown-item>
                             <el-dropdown-item command="/menus/user">基本资料</el-dropdown-item>
                             <el-dropdown-item command="/menus/safe">安全设置</el-dropdown-item>
@@ -94,7 +98,6 @@
                 searchVal:'',
                 activeIndex:'1',
                 avatar:'https://image-static.segmentfault.com/353/178/353178302-5bdfe2c52e3df_articlex',
-                userName:'萧十一郎',
                 isFocus:false,
 
             }
@@ -105,7 +108,7 @@
         computed: {
             ...mapState([
                 'user_uuid',
-                'name',
+                'mer_name',
                 'mobile_no',
                 'email',
                 'merchant_info',

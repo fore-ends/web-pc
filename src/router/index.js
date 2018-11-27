@@ -36,8 +36,12 @@ let routes = [{
     path: '/',
     redirect: '/home'
 }, {
-    path: '/',
-    redirect: '/home'
+    path: '/home',
+    component: Home,
+    meta: {
+        title: '首页',
+        withoutLogin: true
+    }
 }, {
     path: '/demo',
     component: Demo,
@@ -194,8 +198,9 @@ let routes = [{
         }
     }]
 }];
+
 let beforeEach = ((to, from, next) => {
-    if (store.state.name) {
+    if (store.state.enterprise_info.enterprise_card_type) {
         next()
     } else {
         store.dispatch('getUserInfo')
@@ -213,8 +218,6 @@ let beforeEach = ((to, from, next) => {
     }
 })
 routes.map(route => {
-
-
     if (route.name == 'menus') {
         route.children.map(routeChild => {
             routeChild.beforeEnter = (to, from, next) => {

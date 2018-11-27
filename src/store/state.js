@@ -4,7 +4,7 @@
 'use strict'
 const state = {
 	mer_uuid: '',
-	name: '', //企业名称
+	mer_name: '', //企业名称
 	mobile_no: '', //手机号
 	email: '', //邮箱
 	merchant_info: {}, //商户实名信
