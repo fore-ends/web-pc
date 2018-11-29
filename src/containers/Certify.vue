@@ -48,11 +48,7 @@
             return {
                 // inputShow:false,
                 operation_status:'10',//操作状态 10-提交 11-审核中 20-认证成功 12-驳回
-                operation_info:{
-                    ent_name:'智赋科技***公司',
-                    enterprise_registration_no:'9839******SKJ12',
-                    time:'2018-11-11 11:11:11'
-                },
+                operation_info:{},
                 showGuide:true,
                 guideItems:[
                     {
@@ -61,18 +57,26 @@
                         page2:'2、提交以上信息后，需等待审核'
                     }
                 ],
-                guideBtnTxt:'立刻认证'
+                guideBtnTxt:'立刻认证',
+                operation_uuid:'',//操作表uuid
+                operation_pass_time:'',//认证时间,
+                // operation_info:{},
+                payload:'',//'备注及扩展JSON信息',
+                operator_uuids:'',//操作人uuid,
+                created_time:'',//创建时间,
+                updated_time:''//修改时间
             }
         },
         created(){
-            setTimeout(()=>{
-                this.operation_info = {
-                    ent_name:'智赋公司',
-                    enterprise_registration_no:'9839******SKJ12',
-                    time:'2018-11-11 11:11:11',
-                    business_area:'河北省-石家庄市-鹿泉区'
-                }
-            },1000);
+            // setTimeout(()=>{
+            //     this.operation_info = {
+            //         ent_name:'智赋公司',
+            //         enterprise_registration_no:'9839******SKJ12',
+            //         time:'2018-11-11 11:11:11',
+            //         business_area:'河北省-石家庄市-鹿泉区'
+            //     }
+            // },1000);
+            this.getData();
         },
         computed: {
             // inputShow:function(){
@@ -100,6 +104,15 @@
                     if(res.resp_code == 200){
                         _.forEach(res.data,(item,key) => {
                             this[key] = item;
+                        });
+                        if(!this.operation_uuid){
+                            this.operation_status = '10';
+                        }
+                    }else{
+                        this.$message({
+                            type:'error',
+                            message:res.resp_message,
+                            showClose:true
                         });
                     }
                 })

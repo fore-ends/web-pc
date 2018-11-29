@@ -118,6 +118,7 @@
                                 size="medium"
                                 placeholder="请输入联系电话"
                                 maxlength="20"
+                                @keyup.native="mobile_no = onlyNumber(mobile_no)"
                                 clearable></el-input>
                         </dd>
                     </dl>
@@ -160,7 +161,8 @@
                             <el-input v-model="business_address"
                                 size="medium"
                                 placeholder="请输入营业地址"
-                                clearable></el-input>
+                                clearable
+                                maxlength="100"></el-input>
                         </dd>
                     </dl>
                 </div>
@@ -181,10 +183,11 @@
                             action="https://jsonplaceholder.typicode.com/posts/"
                             :on-success="item.success"
                             :on-error="item.error"
-                            multiple>
+                            multiple
+                            list-type="picture">
                             <i class="el-icon-upload"></i>
                             <div class="el-upload__text">将文件拖拽到这里上传，或<em>点击上传</em></div>
-                            <div class="el-upload__tip" slot="tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg</div>
+                            <div class="el-upload__tip" slot="tip">{{item.desc}}</div>
                         </el-upload>
                     </dd>
                 </dl>
@@ -321,7 +324,7 @@
                 attachmentItems:{
                     enterprise_card_file:{
                         title:'法定代表人证件正面',
-                        desc:'支持扩展名：.rar .zip .doc .docx .pdf .jpg',
+                        desc:'支持扩展名：.pdf .jpg .jpeg .png',
                         success:(file, fileList) =>{
                             console.log(file, fileList)
                         },
@@ -332,7 +335,7 @@
                     },
                     corporation_id_face_file:{
                         title:' 法定代表人证件反面',
-                        desc:'支持扩展名：.rar .zip .doc .docx .pdf .jpg',
+                        desc:'支持扩展名：.pdf .jpg .jpeg .png',
                         success:(file, fileList) =>{
                             console.log(file, fileList)
                         },
@@ -343,7 +346,7 @@
                     },
                     corporation_id_back_file:{
                         title:' 营业执照',
-                        desc:'支持扩展名：.rar .zip .doc .docx .pdf .jpg',
+                        desc:'支持扩展名：.pdf .jpg .jpeg .png',
                         success:(file, fileList) =>{
                             console.log(file, fileList)
                         },
@@ -353,7 +356,7 @@
 
                     }
                 },
-                uploadAccept:'image/gif, image/jpeg,application/pdf,application/msword, application/vnd.ms-works,application/vnd.openxmlformats-officedocument.wordprocessingml.document,aplication/zip'
+                uploadAccept:'image/jpeg,image/jpg,application/pdf,image/png'
             }
         },
         created(){
@@ -523,10 +526,48 @@
                 //     return false;
                 // }
                 //处理地址
-                business_address = `${provinceName}-${cityName}-${countyName}`;
+                business_area = `${provinceName}-${cityName}-${countyName}`;
                 let mer_uuid = this.$store.state.mer_uuid;
-                $api.post(`/bizeff/merchants/${mer_uuid}/certificates`).then(res =>{
-
+                const loading = this.$loading({
+                    lock: true
+                });
+                $api.post(`/bizeff/merchants/${mer_uuid}/certificates`,{
+                    ent_certificate:{
+                        ent_name,
+                        enterprise_card_type,
+                        enterprise_registration_no,
+                        opening_bank,
+                        account_name,
+                        account_number,
+                        business_area,
+                        business_address,
+                        enterprise_card_file:'www.bizeff.cn/file1.pdf'
+                    },
+                    legal_person:{
+                        corporation_name,
+                        corporation_id_type,
+                        corporation_id_no,
+                        mobile_no,
+                        
+                        corporation_id_face_file:'www.bizeff.cn/file2.pdf',
+                        corporation_id_back_file:'www.bizeff.cn/file3.pdf'
+                    }
+                }).then(res =>{
+                    loading.close();
+                    if(res.resp_code == 200){
+                        this.operation_status = res.data.operation_status;
+                        this.$message({
+                            type:'success',
+                            message:'保存成功！',
+                            showClose:true
+                        });
+                    }else{
+                        this.$message({
+                            type:'error',
+                            message:res.resp_message,
+                            showClose:true
+                        });
+                    }
                 })
             },
             messageError(message){

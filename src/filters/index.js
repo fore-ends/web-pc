@@ -87,6 +87,13 @@ export let timeFormat = (input) => {
     let ouputs = (y + '-' + setTime(m) + '-' + setTime(d) + ' ' + setTime(h) + ':' + setTime(f) + ':' + setTime(s));
     return ouputs;
 };
+export let timeFormat2 = (input) => {
+    if ((input == null) || (input == undefined)) {
+        return '--';
+    }
+    let arr = input.split('.');
+    return arr[0];
+};
 export let periodType = (input) => {
     if (!input) {
         return '';

@@ -68,8 +68,8 @@
                         </el-menu-item> -->
                     </el-menu>
                 </div>
-                <div flex-box="1" class="main-inner">
-                    <index-title :title="indexTitile"></index-title>
+                <div flex-box="1" flex="dir:top" class="main-inner">
+                    <index-title flex-box="0" :title="indexTitile"></index-title>
                     <router-view flex-box="1" class="inner-box"></router-view>
                 </div>
             </div>

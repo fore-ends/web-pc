@@ -1,6 +1,6 @@
 <template>
-    <div class="spend-detail">
-        <div flex="main:justify" class="table-header-bar">
+    <div flex="dir:top" class="spend-detail">
+        <div flex-box="0" flex="main:justify" class="table-header-bar">
             <dl flex="cross:center">
                 <dt>交易日期：</dt>
                 <dd>
@@ -34,7 +34,7 @@
                 <el-button type="success" @click="output">导出</el-button>
             </div>
         </div>
-        <el-card shadow="never">
+        <el-card flex-box="1" shadow="never">
             <el-table
                 :data="tableData"
                 stripe
@@ -94,7 +94,7 @@
                 </el-table-column>
             </el-table>
         </el-card>
-        <div flex="dir:right cross:center" class="pagination-wrap">
+        <div flex-box="0" flex="dir:right cross:center" class="pagination-wrap">
             <el-pagination
                 background
                 @size-change="handleSizeChange"

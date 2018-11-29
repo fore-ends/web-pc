@@ -4,6 +4,9 @@
 let protocol = window.location.protocol;
 export const devUrl = 'http://192.168.0.105:3000';
 export const testUrl = ``;
+export const sysDev = ``;
+export const sysTest = ``;
+export const sysProduction = ``;
 export const productionUrl = ``;
 export const telNumber = '';
 let encrypt = false;
