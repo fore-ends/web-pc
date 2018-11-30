@@ -58,23 +58,13 @@
             :visible.sync="phoneDialogVisible"
             width="360px"
             center>
-            <!-- <el-dialog class="dialog-phone"
-                width="360px"
-                title="绑定手机号"
-                :visible.sync="innerVisible"
-                append-to-body
-                center
-                :before-close="handleClose">
-                
-                
-            </el-dialog> -->
             <div class="dialog-phone">
                 <div flex class="flex-wrap"
-                    :class="{'new-phone':!newPhoneShow}">
+                    :class="{'new-phone':newPhoneShow}">
                     <div class="phone-form">
                         <dl flex="main:justify cross:center">
                             <dt flex-box="0">已绑手机号：</dt>
-                            <dd flex-box="1">189****6789</dd>
+                            <dd flex-box="1">{{mobile_no}}</dd>
                         </dl>
                         <dl class="dom-must" flex="main:justify cross:center">
                             <dt flex-box="0">验证码：</dt>
@@ -93,19 +83,6 @@
                             </dd>
                         </dl>
                     </div>
-                    <!-- <div >
-                        <span class="span-el-input">
-                            <el-input type="text" placeholder="请输入手机号" maxlength="11"
-                                v-model="oldMobile"
-                                @keyup.native="oldMobile = onlyNumber(oldMobile)"
-                                ></el-input>
-                        </span>
-                        <span>
-                            <el-button type="primary" icon="el-icon-arrow-right"
-                                :loading="phoneLoading"
-                                @click="goVerify">验证</el-button>
-                        </span>
-                    </div> -->
                     <div class="phone-form">
                         <dl class="dom-must" flex="main:justify cross:center">
                             <dt flex-box="0">手机号：</dt>
@@ -219,6 +196,7 @@
                 phoneDialogVisible:false,
                 phoneNumber:'',//安全手机
                 realPhoneNumber:'',//真实提交的手机号
+
                 verifyPhone:'',
                 verifyPhoneLoading:false,
                 btnTextPhone:'获取验证码',
@@ -235,7 +213,9 @@
                 verifyPsw:'',
                 pswDialogVisible:false,
                 pswLoading:false,
-                newPhoneShow:this.mobile_no?false:true//显示新手机号输入
+                newPhoneShow:this.$store.state.operator_mobile_no?false:true,//显示新手机号输入
+                sms_uuid:'',
+                active_code_serial_no: ''
             }
         },
         created(){
@@ -285,43 +265,21 @@
                 }
                 this.verifyOldPhoneLoading = true;
                 //ajax下发验证码
-                let mobile_no = this.mobile_no;
                 $api.post('/bizeff/merchants/sms',{
-                    operate_type:'03',
-                    mobile_no
+                    operate_type:'0301'
                 }).then(res =>{
-                    console.log(res);
-                });
-                verifyTime((res)=>{
-                    if(res.statu){
-                        //倒计时结束
-                        this.btnTextOldPhone = '获取验证码';
-                        this.verifyOldPhoneLoading = false;
-                    }else{
-                        this.btnTextOldPhone = `${res.time}s`;
-                    }
-                })
-            },
-            goVerify(){
-                let oldMobile = this.oldMobile;
-                if(!checkPhone(oldMobile)){
-                    this.$message({
-                        type:'error',
-                        message:'请输入正确格式的手机号！',
-                        showClose:true
-                    });
-                    return false;
-                }
-                this.phoneLoading = true;
-                // this.newPhoneShow = true;
-                $api.post(`/bizeff/merchants/${this.mer_uuid}/operator/check`,{
-                    mobile_no:oldMobile
-                }).then(res =>{
-                    this.phoneLoading = false;
-                    
                     if(res.resp_code == 200){
-                        this.oldMobile = '';
-                        this.newPhoneShow = true;
+                        verifyTime((data)=>{
+                            if(data.statu){
+                                //倒计时结束
+                                this.btnTextOldPhone = '获取验证码';
+                                this.verifyOldPhoneLoading = false;
+                            }else{
+                                this.btnTextOldPhone = `${data.time}s`;
+                            }
+                        });
+                        this.sms_uuid = res.data.sms_uuid;
+                        this.active_code_serial_no = res.data.active_code_serial_no;
                     }else{
                         this.$message({
                             type:'error',
@@ -329,7 +287,8 @@
                             showClose:true
                         });
                     }
-                })
+                });
+                
             },
             //绑定手机号下发验证码
             bindPhoneVerify(){
@@ -354,25 +313,56 @@
                     operate_type:'03',
                     mobile_no:phoneNumber
                 }).then(res =>{
-                    console.log(res);
-                });
-                verifyTime((res)=>{
-                    if(res.statu){
-                        //倒计时结束
-                        this.btnTextPhone = '获取验证码';
-                        this.verifyPhoneLoading = false;
+                    if(res.resp_code == 200){
+                        //开始倒计时
+                        verifyTime((data)=>{
+                            if(data.statu){
+                                //倒计时结束
+                                this.btnTextOldPhone = '获取验证码';
+                                this.verifyOldPhoneLoading = false;
+                            }else{
+                                this.btnTextOldPhone = `${data.time}s`;
+                            }
+                        });
+                        this.active_code_serial_no = res.data.active_code_serial_no;
+                        this.sms_uuid = res.data.sms_uuid;
                     }else{
-                        this.btnTextPhone = `${res.time}s`;
+                        this.$message({
+                            type:'error',
+                            message:res.resp_message,
+                            showClose:true
+                        });
                     }
-                })
+                });
             },
             //提交绑定手机号
             phoneDialogSumit(){
                 if(!this.newPhoneShow){
                     //老手机号提交验证码
+                    //校验
+                    let verifyOldPhone = this.verifyOldPhone;
+                    if(!trim(verifyOldPhone) || trim(verifyOldPhone).length<6){
+                        this.$message({
+                            type:'error',
+                            message:'请输入正确验证码！',
+                            showClose:true
+                        });
+                        return false;
+                    }
+                    this.btnLoading = true;
                     //ajax
-                    $api.post('').then(res => {
+                    $api.post(`/bizeff/merchants/${this.mer_uuid}/operator/check`,{
+                        operate_type:'0301',
+                        active_code_serial_no:this.active_code_serial_no,
+                        sms_uuid:this.sms_uuid,
+                        code:this.verifyOldPhone
+                    }).then(res => {
+                        this.btnLoading = false;
                         if(res.resp_code == 200){
+                            //清空输入记录
+                            this.sms_uuid = '';
+                            this.active_code_serial_no = '';
+                            this.verifyOldPhone = '';
                             //显示新手机绑定
                             this.newPhoneShow = true;
                         }else{
@@ -412,9 +402,20 @@
                     return false;
                 }
                 this.btnLoading = true;
-                $api.post(`/bizeff/merchants/${this.mer_uuid}/operator/`,{
-                    mobile_no:realPhoneNumber,
-                    verify:'123456'
+                let{
+                    operator_uuid,user_name,
+                    active_code_serial_no,sms_uuid
+                } = this;
+                $api.put(`/bizeff/merchants/${this.mer_uuid}/operators`,{
+                    operator_uuid,
+                    user_name,
+                    mobile_no:{
+                        mobile_no:this.realPhoneNumber,
+                        operate_type:'03',
+                        active_code_serial_no,
+                        sms_uuid,
+                        code:this.verifyPhone
+                    }
                 }).then(res => {
                     this.btnLoading = false;
                     if(res.resp_code == 200){
@@ -429,6 +430,7 @@
                         _.forEach(res.data,(item,key) => {
                             this[key] = item;
                         });
+                        this.newPhoneShow = (this.mobile_no?false:true);
                     }else{
                         this.$message({
                             message: res.resp_message,
@@ -523,9 +525,9 @@
                 return onlyNumber(val);
             },
             closeDialog(){
-                if(!this.mobile_no){
+                // if(!this.mobile_no){
                     this.phoneDialogVisible = false;
-                }
+                // }
             }
         },
         destroyed(){

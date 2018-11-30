@@ -32,14 +32,12 @@ mutations.setBalances = (state, data) => {
 mutations.setAccountInfo = (state, data) => {
 	if (data) {
 		_.forEach(state, (value, key) => {
-			if (data.hasOwnProperty(key)) {
-				if (key == 'operator_mobile_no') {
-					state[key] = data.mobile_no;
-				} else if (key == 'operator_email') {
-					state[key] = data.email;
-				} else {
-					state[key] = data[key];
-				}
+			if (key == 'operator_mobile_no') {
+				state[key] = data.mobile_no;
+			} else if (key == 'operator_email') {
+				state[key] = data.email;
+			} else if (data.hasOwnProperty(key)) {
+				state[key] = data[key];
 			}
 		});
 	}

@@ -180,9 +180,10 @@
                             with-credentials
                             :limit="1"
                             :accept="uploadAccept"
-                            action="https://jsonplaceholder.typicode.com/posts/"
+                            :action="uploadUrl"
                             :on-success="item.success"
                             :on-error="item.error"
+                            :file-list="fileList"
                             multiple
                             list-type="picture">
                             <i class="el-icon-upload"></i>
@@ -282,6 +283,7 @@
         props:['data'],
         data(){
             return {
+                mer_uuid:this.$store.state.mer_uuid,
                 ent_name:'',
                 enterprise_card_type:'0',//企业证件类型
                 cardTypeOptions: [
@@ -356,7 +358,10 @@
 
                     }
                 },
-                uploadAccept:'image/jpeg,image/jpg,application/pdf,image/png'
+                uploadAccept:'image/jpeg,image/jpg,application/pdf,image/png',
+                fileList:[
+                    {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
+                ]
             }
         },
         created(){
@@ -365,6 +370,10 @@
             this.getData(this.data);
         },
         computed: {
+            //上传附件地址
+            uploadUrl:function(){
+                return `${$api.serverUrl}/bizeff/merchants/${this.mer_uuid}/upload`;
+            },
             cityOptions:function(){
                 for(let i = 0;i<this.provinceOptions.length;i++){
                     if(this.provinceOptions[i].value == this.province){

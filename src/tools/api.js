@@ -160,6 +160,46 @@ let post2 = (path, data = {}) => {
     })
 
 };
+let put = (path, data = {}) => {
+    let url = '';
+    if (/http/.test(path)) {
+        url = `${path}`;
+    } else {
+        url = `${serverUrl + path}`;
+    }
+    //获取 mer_uuid
+    let mer_uuid = cookie.getItem('bizeffNo');
+    return axios({
+        url,
+        method: 'put',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'mer_uuid': mer_uuid,
+            'sequence_no': new Date().getTime()
+        },
+        params: {
+            t: new Date().getTime()
+        },
+        withCredentials: true,
+        dataType: 'json',
+        data: data
+    }).then(response => {
+        if (response.status == 200) {
+
+            return response.data;
+        } else {
+            return {};
+        }
+    }).then(data => {
+        if (data.code == 401) {
+            logout();
+        }
+        return data;
+    }).catch(err => {
+        console.log('err--->')
+    })
+
+};
 let postSys = (path, data = {}) => {
     let url = `${sysUrl + path}`;
     return post(url, data);
@@ -168,6 +208,7 @@ const $api = {
     get,
     post,
     post2,
+    put,
     getSys,
     postSys,
     serverUrl
