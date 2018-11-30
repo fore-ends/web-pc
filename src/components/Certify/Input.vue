@@ -183,7 +183,7 @@
                             :action="uploadUrl"
                             :on-success="item.success"
                             :on-error="item.error"
-                            :file-list="fileList"
+                            :file-list="item.fileList"
                             multiple
                             list-type="picture">
                             <i class="el-icon-upload"></i>
@@ -327,8 +327,10 @@
                     enterprise_card_file:{
                         title:'法定代表人证件正面',
                         desc:'支持扩展名：.pdf .jpg .jpeg .png',
+                        fileList:[],
+                        imgUrl:'',
                         success:(file, fileList) =>{
-                            console.log(file, fileList)
+                            this.uploadSuccess(file,'enterprise_card_file');
                         },
                         error:(file, fileList) =>{
                             console.log(file, fileList)
@@ -338,8 +340,11 @@
                     corporation_id_face_file:{
                         title:' 法定代表人证件反面',
                         desc:'支持扩展名：.pdf .jpg .jpeg .png',
+                        fileList:[],
+                        imgUrl:'',
                         success:(file, fileList) =>{
                             console.log(file, fileList)
+                            this.uploadSuccess(file,'corporation_id_face_file');
                         },
                         error:(file, fileList) =>{
                             console.log(file, fileList)
@@ -349,8 +354,11 @@
                     corporation_id_back_file:{
                         title:' 营业执照',
                         desc:'支持扩展名：.pdf .jpg .jpeg .png',
+                        fileList:[],
+                        imgUrl:'',
                         success:(file, fileList) =>{
                             console.log(file, fileList)
+                            this.uploadSuccess(file,'corporation_id_back_file');
                         },
                         error:(file, fileList) =>{
                             console.log(file, fileList)
@@ -358,10 +366,7 @@
 
                     }
                 },
-                uploadAccept:'image/jpeg,image/jpg,application/pdf,image/png',
-                fileList:[
-                    {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
-                ]
+                uploadAccept:'image/jpeg,image/jpg,application/pdf,image/png'
             }
         },
         created(){
@@ -522,18 +527,19 @@
                     this.messageError('请选择联系地址！');
                     return false;
                 }
-                // if(!enterprise_card_file){
-                //     this.messageError('请上传法定代表人证件正面！');
-                //     return false;
-                // }
-                // if(!corporation_id_face_file){
-                //     this.messageError('请上传法定代表人证件反面！');
-                //     return false;
-                // }
-                // if(!corporation_id_back_file){
-                //     this.messageError('请上传营业执照！');
-                //     return false;
-                // }
+
+                if(!enterprise_card_file){
+                    this.messageError('请上传法定代表人证件正面！');
+                    return false;
+                }
+                if(!corporation_id_face_file){
+                    this.messageError('请上传法定代表人证件反面！');
+                    return false;
+                }
+                if(!corporation_id_back_file){
+                    this.messageError('请上传营业执照！');
+                    return false;
+                }
                 //处理地址
                 business_area = `${provinceName}-${cityName}-${countyName}`;
                 let mer_uuid = this.$store.state.mer_uuid;
@@ -550,7 +556,7 @@
                         account_number,
                         business_area,
                         business_address,
-                        enterprise_card_file:'www.bizeff.cn/file1.pdf'
+                        enterprise_card_file
                     },
                     legal_person:{
                         corporation_name,
@@ -558,8 +564,8 @@
                         corporation_id_no,
                         mobile_no,
                         
-                        corporation_id_face_file:'www.bizeff.cn/file2.pdf',
-                        corporation_id_back_file:'www.bizeff.cn/file3.pdf'
+                        corporation_id_face_file,
+                        corporation_id_back_file
                     }
                 }).then(res =>{
                     loading.close();
@@ -585,6 +591,19 @@
                     message,
                     showClose:true
                 });
+            },
+            uploadSuccess(data,key){
+                if(data.resp_code == 200){
+                    let filename = data.data.unique_file_name;
+                    this[key] = JSON.stringify(data.data);
+                    // $api.get(`/bizeff/merchants/file/${filename}`).then(res => {
+                    //     if(res.resp_code == 200){
+                            
+                    //     }else{
+                    //         this.messageError(res.resp_message);
+                    //     }
+                    // })
+                }
             },
             getData(data){
                 console.log(data);
