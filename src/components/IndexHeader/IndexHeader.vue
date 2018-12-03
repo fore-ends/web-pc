@@ -109,6 +109,8 @@
             store.dispatch('getAccountInfo');
             //账户
             store.dispatch('getBalances');
+            //认证信息
+            store.dispatch('getCertificates');
         },
         computed: {
             ...mapState([

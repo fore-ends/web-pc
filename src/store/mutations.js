@@ -42,4 +42,14 @@ mutations.setAccountInfo = (state, data) => {
 		});
 	}
 };
+//认证信息
+mutations.setCertificates = (state, data) => {
+	if (data) {
+		_.forEach(state, (value, key) => {
+			if (data.hasOwnProperty(key)) {
+				state[key] = data[key];
+			}
+		});
+	}
+};
 export default mutations;

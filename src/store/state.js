@@ -22,6 +22,9 @@ const state = {
 	operator_mobile_no: '', //手机号,(脱敏)
 	operator_email: '', //邮箱,(脱敏)
 	created_time: '', //创建时间(开通时间),
-	updated_time: '' //修改时间,
+	updated_time: '', //修改时间,
+	//认证信息
+	operation_status: '',
+	operation_info: {}
 };
 export default state;

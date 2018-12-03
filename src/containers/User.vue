@@ -1,10 +1,12 @@
 <template>
     <div class="user">
-        <div class="user-head">
+        <div class="user-head"
+            v-if="operation_status == '10' || operation_status == '12'">
             <!-- <div class="user-tit">
                 <i class="el-icon-warning"></i><span>您的企业信息尚未完善，请完善企业信息</span>
-            </div> -->
-            <p class="user-wran">请务必准确填写您公司真实信息，实名认证成功后此处将被替换为实名认证时提交的信息，且不能再被修改。</p>
+            </div>
+            <p class="user-wran">请务必准确填写您公司真实信息，实名认证成功后此处将被替换为实名认证时提交的信息，且不能再被修改。</p> -->
+            <p><i class="el-icon-warning"></i>您还未实名，为保证您的业务尽快开展，请<el-button type="text" @click="link">立即实名</el-button>！</p>
         </div>
         <div class="user-main">
 
@@ -190,6 +192,11 @@
             callBack(res){
                 console.log(res)
                 this.imgSrc = res;
+            },
+            link(){
+                this.$router.push({
+                    path:'/menus/certify'
+                });
             }
         },
         destroyed(){

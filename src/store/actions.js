@@ -60,4 +60,19 @@ actions.getAccountInfo = ({
 		return data;
 	})
 }
+//认证信息 
+let getCertificates = () => {
+	let mer_uuid = cookie.getItem('bizeffNo');
+	return $api.get(`/bizeff/merchants/${mer_uuid}/certificates`);
+};
+actions.getCertificates = ({
+	commit
+}) => {
+	return getCertificates().then(data => {
+		if (data && data.resp_code == 200) {
+			commit('setCertificates', data.data);
+		}
+		return data;
+	})
+}
 export default actions;

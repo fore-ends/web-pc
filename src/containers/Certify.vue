@@ -63,7 +63,7 @@
                 operation_pass_time:'',//认证时间,
                 // operation_info:{},
                 payload:'',//'备注及扩展JSON信息',
-                operator_uuids:'',//操作人uuid,
+                operator_uuid:'',//操作人uuid,
                 created_time:'',//创建时间,
                 updated_time:'',//修改时间
 
@@ -81,10 +81,12 @@
             // },1000);
 
             //以下设置在认证成功后数据不再接口更新
-            if(EventBus.operationData && EventBus.operationData.operation_status == '20'){
-                _.forEach(EventBus.operationData,(item,key) => {
-                    this[key] = item;
-                });
+            if(this.$store.state.operation_status == '20'){
+                // _.forEach(EventBus.operationData,(item,key) => {
+                //     this[key] = item;
+                // });
+                this.operation_status = this.$store.state.operation_status;
+                this.operation_info = this.$store.state.operation_info;
                 this.vLoading = false;
             }else{
                 this.getData();
@@ -127,7 +129,9 @@
                             this.operation_status = '10';
                         }
                         //存储认证状态
-                        EventBus.operationData = res.data;
+                        this.$store.state.operation_status = res.data.operation_status;
+                        this.$store.state.operation_info = res.data.operation_info;
+    
                     }else{
                         this.$message({
                             type:'error',
