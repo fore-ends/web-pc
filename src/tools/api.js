@@ -41,7 +41,7 @@ let get = (path, data = {}) => {
     data.t = new Date().getTime();
     let url = '';
     //获取 mer_uuid
-    let mer_uuid = cookie.getItem('bizeffNo');
+    let mer_uuid = cookie.getItem('bizeffNo') || '';
     if (/http/.test(path)) {
         url = `${path}`;
 
@@ -90,7 +90,7 @@ let post = (path, data = {}) => {
         url = `${serverUrl + path}`;
     }
     //获取 mer_uuid
-    let mer_uuid = cookie.getItem('bizeffNo');
+    let mer_uuid = cookie.getItem('bizeffNo') || '';
     return axios({
         url,
         method: 'post',
@@ -168,7 +168,7 @@ let put = (path, data = {}) => {
         url = `${serverUrl + path}`;
     }
     //获取 mer_uuid
-    let mer_uuid = cookie.getItem('bizeffNo');
+    let mer_uuid = cookie.getItem('bizeffNo') || '';
     return axios({
         url,
         method: 'put',
